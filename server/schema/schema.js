@@ -26,9 +26,9 @@ const directors = [
   { name: "Damien", age: 25, id: "3" },
 ];
 
-// Create a new object type
-// name is the name of the object type
-// fields are the different fields of the object type
+// Creates a new object type
+// The field name is the name of the object type
+// Fields are the different fields of the object type
 // PS the order is important
 const MovieType = new GraphQLObjectType({
   name: "Movie",
@@ -66,13 +66,6 @@ const DirectorType = new GraphQLObjectType({
   }),
 });
 
-/* Example query from the frontend:
-movie(id: "fsd2123y") {
-    name
-    gerne
-}
-*/
-
 // Root queries need to be defined in the schema
 // Movie query needs to specify the argument id to work
 // The actually database requests needs to be defined via resolve()
@@ -95,6 +88,18 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         return _.find(directors, { id: args.id });
+      },
+    },
+    movies: {
+      type: new GraphQLList(MovieType),
+      resolve(parent, args) {
+        return movies;
+      },
+    },
+    directors: {
+      type: new GraphQLList(DirectorType),
+      resolve(parent, args) {
+        return directors;
       },
     },
   }),
