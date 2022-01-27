@@ -13,14 +13,20 @@ Examples for enpoint could be:
 
 # GraphQL
 
-Query language to communicate data
+GraphQL is a
 
+- declarative, strongly-typed query language
+- for client applications
+
+Clients define
+
+- the exact data shape and contents
+- that they need in a single request
+
+So the GraphQL enables
+
+- to communicate data
 - between a client, the browser, and a server
-
-It allows us to structure data driven applications
-
-- that are much more flexible and efficient way
-- therefore often just one instead of multiple requests are necessaryy
 
 React App can make queries
 
