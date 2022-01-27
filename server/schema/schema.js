@@ -3,14 +3,20 @@ const graphql = require("graphql");
 const _ = require("lodash");
 
 // Import different objects from GraphQL package
-const { GraphQLObjectType, GraphQLString, GraphQLID, GraphQLSchema } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLID,
+  GraphQLList,
+  GraphQLSchema,
+} = graphql;
 
 // Movies dummy data
 const movies = [
-  { name: "Joker", genre: "Drama", id: "1" },
-  { name: "La La land", genre: "Musical", id: "2" },
-  { name: "Interstellar", genre: "Sci-Fi", id: "3" },
-  { name: "Kingdom", genre: "Romance", id: "4" },
+  { name: "Joker", genre: "Drama", id: "1", directorId: "1" },
+  { name: "La La land", genre: "Musical", id: "2", directorId: "2" },
+  { name: "Interstellar", genre: "Sci-Fi", id: "3", directorId: "1" },
+  { name: "Kingdom", genre: "Romance", id: "4", directorId: "3" },
 ];
 
 // Directors dummy data
@@ -18,7 +24,6 @@ const directors = [
   { name: "Philips", age: 40, id: "1" },
   { name: "Anderson", age: 36, id: "2" },
   { name: "Damien", age: 25, id: "3" },
-  { name: "Nolan", age: 53, id: "4" },
 ];
 
 // Create a new object type
@@ -31,6 +36,17 @@ const MovieType = new GraphQLObjectType({
     id: { type: GraphQLID }, // ID enables to pass not "1", but just 1 (= more flexible)
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+    // Relationship between types can be defined as follows
+    // a type can be reused
+    // and the parent parameter be used to find the director
+    // via the directorID of the parent (here movie)
+    director: {
+      type: DirectorType, // is enough if there is just one director per movie (if more, GraphQLList is needed)
+      resolve(parent, args) {
+        console.log(parent);
+        return _.find(directors, { id: parent.directorId });
+      },
+    },
   }),
 });
 
@@ -40,6 +56,12 @@ const DirectorType = new GraphQLObjectType({
     id: { type: GraphQLID }, // ID enables to pass not "1", but just 1 (= more flexible)
     name: { type: GraphQLString },
     age: { type: GraphQLInt },
+    movies: {
+      type: new GraphQLList(MovieType), // list of movie types
+      resolve(parent, args) {
+        return _.filter(movies, { directorId: parent.id }); // filter through array, for each movie that has the specified id
+      },
+    },
   }),
 });
 
