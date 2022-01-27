@@ -11,7 +11,7 @@ const CONNECTION_URL =
   "mongodb+srv://admin:admin@cluster0.5urt9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 mongoose.connect(CONNECTION_URL);
 mongoose.connection.once("open", () => {
-  console.log("Connection to database has been established");
+  console.log("Connection to database has been established succesfully");
 });
 
 /* Setup supercharged endpoint
