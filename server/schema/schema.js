@@ -33,6 +33,7 @@ const directors = [
 const MovieType = new GraphQLObjectType({
   name: "Movie",
   fields: () => ({
+    // Needs to be a function, because then JS waits until everything else the whole file is run. Before the type (e.g. DirectorType) cannot be accessed before initalization
     id: { type: GraphQLID }, // ID enables to pass not "1", but just 1 (= more flexible)
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
@@ -59,7 +60,7 @@ const DirectorType = new GraphQLObjectType({
     movies: {
       type: new GraphQLList(MovieType), // list of movie types
       resolve(parent, args) {
-        return _.filter(movies, { directorId: parent.id }); // filter through array, for each movie that has the specified id
+        return _.filter(movies, { id: parent.id }); // filter through array, for each movie that has the specified id
       },
     },
   }),
