@@ -1,6 +1,8 @@
 const { GraphQLInt } = require("graphql");
 const graphql = require("graphql");
 const _ = require("lodash");
+const Movie = require("../models/movie");
+const Director = require("../models/director");
 
 // Import different objects from GraphQL package
 const {
@@ -10,21 +12,6 @@ const {
   GraphQLList,
   GraphQLSchema,
 } = graphql;
-
-// Movies dummy data
-const movies = [
-  { name: "Joker", genre: "Drama", id: "1", directorId: "1" },
-  { name: "La La land", genre: "Musical", id: "2", directorId: "2" },
-  { name: "Interstellar", genre: "Sci-Fi", id: "3", directorId: "1" },
-  { name: "Kingdom", genre: "Romance", id: "4", directorId: "3" },
-];
-
-// Directors dummy data
-const directors = [
-  { name: "Philips", age: 40, id: "1" },
-  { name: "Anderson", age: 36, id: "2" },
-  { name: "Damien", age: 25, id: "3" },
-];
 
 // Creates a new object type
 // The field name is the name of the object type
@@ -45,7 +32,7 @@ const MovieType = new GraphQLObjectType({
       type: DirectorType, // is enough if there is just one director per movie (if more, GraphQLList is needed)
       resolve(parent, args) {
         console.log(parent);
-        return _.find(directors, { id: parent.directorId });
+        // return _.find(directors, { id: parent.directorId });
       },
     },
   }),
@@ -60,7 +47,7 @@ const DirectorType = new GraphQLObjectType({
     movies: {
       type: new GraphQLList(MovieType), // list of movie types
       resolve(parent, args) {
-        return _.filter(movies, { id: parent.id }); // filter through array, for each movie that has the specified id
+        // return _.filter(movies, { id: parent.id }); // filter through array, for each movie that has the specified id
       },
     },
   }),
@@ -80,26 +67,26 @@ const RootQuery = new GraphQLObjectType({
         console.log(typeof args.id); // returns a string, because GraphQLID is in the end a string
 
         // this function acutally gets data from database
-        return _.find(movies, { id: args.id });
+        // return _.find(movies, { id: args.id });
       },
     },
     director: {
       type: DirectorType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(directors, { id: args.id });
+        // return _.find(directors, { id: args.id });
       },
     },
     movies: {
       type: new GraphQLList(MovieType),
       resolve(parent, args) {
-        return movies;
+        // return movies;
       },
     },
     directors: {
       type: new GraphQLList(DirectorType),
       resolve(parent, args) {
-        return directors;
+        // return directors;
       },
     },
   }),
