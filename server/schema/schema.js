@@ -11,6 +11,7 @@ const {
   GraphQLID,
   GraphQLList,
   GraphQLSchema,
+  GraphQLNonNull,
 } = graphql;
 
 // Creates a new object type
@@ -99,11 +100,27 @@ const RootQuery = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
   name: "Mutation",
   fields: {
+    addMovie: {
+      type: MovieType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        genre: { type: new GraphQLNonNull(GraphQLString) },
+        directorId: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args) {
+        let movie = new MovieModel({
+          name: args.name,
+          genre: args.genre,
+          directorId: args.directorId,
+        });
+        return movie.save();
+      },
+    },
     addDirector: {
       type: DirectorType,
       args: {
-        name: { type: GraphQLString },
-        age: { type: GraphQLInt },
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
       },
       resolve(parent, args) {
         let director = new DirectorModel({
@@ -113,22 +130,6 @@ const Mutation = new GraphQLObjectType({
           age: args.age,
         });
         return director.save(); // Enables to save the instance of the director model, so a mongodb document, to the database
-      },
-    },
-    addMovie: {
-      type: MovieType,
-      args: {
-        name: { type: GraphQLString },
-        genre: { type: GraphQLString },
-        directorId: { type: GraphQLID },
-      },
-      resolve(parent, args) {
-        let movie = new MovieModel({
-          name: args.name,
-          genre: args.genre,
-          directorId: args.directorId,
-        });
-        return movie.save();
       },
     },
   },
