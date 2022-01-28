@@ -2,7 +2,7 @@ const { GraphQLInt } = require("graphql");
 const graphql = require("graphql");
 const _ = require("lodash");
 const MovieModel = require("../models/movie");
-const Director = require("../models/director");
+const DirectorModel = require("../models/director");
 
 // Import different objects from GraphQL package
 const {
@@ -31,8 +31,8 @@ const MovieType = new GraphQLObjectType({
     director: {
       type: DirectorType, // is enough if there is just one director per movie (if more, GraphQLList is needed)
       resolve(parent, args) {
-        console.log(parent);
         // return _.find(directors, { id: parent.directorId });
+        return DirectorModel.findById(parent.directorId); // finds ONE director based on the movie, `therefore just string`
       },
     },
   }),
@@ -48,6 +48,7 @@ const DirectorType = new GraphQLObjectType({
       type: new GraphQLList(MovieType), // list of movie types
       resolve(parent, args) {
         // return _.filter(movies, { id: parent.id }); // filter through array, for each movie that has the specified id
+        return MovieModel.find({ directorId: parent.id }); // finds ALL movies based on the respective director, `therefore object`
       },
     },
   }),
@@ -64,10 +65,9 @@ const RootQuery = new GraphQLObjectType({
       type: MovieType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        console.log(typeof args.id); // returns a string, because GraphQLID is in the end a string
-
         // this function acutally gets data from database
         // return _.find(movies, { id: args.id });
+        return MovieModel.findById(args.id);
       },
     },
     director: {
@@ -75,18 +75,21 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         // return _.find(directors, { id: args.id });
+        return DirectorModel.findById(args.id);
       },
     },
     movies: {
       type: new GraphQLList(MovieType),
       resolve(parent, args) {
         // return movies;
+        return MovieModel.find({}); // if no criteria specified, all movies are returned
       },
     },
     directors: {
       type: new GraphQLList(DirectorType),
       resolve(parent, args) {
         // return directors;
+        return DirectorModel.find({});
       },
     },
   }),
@@ -103,7 +106,7 @@ const Mutation = new GraphQLObjectType({
         age: { type: GraphQLInt },
       },
       resolve(parent, args) {
-        let director = new Director({
+        let director = new DirectorModel({
           // Enables to create a director based on the provided args with the Director Model
           // @ts-ignore
           name: args.name,
