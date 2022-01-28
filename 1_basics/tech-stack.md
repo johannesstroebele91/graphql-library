@@ -28,7 +28,6 @@
    - and retriev that data
    - which can then be used to show the data to the user in the browser
 
-6. Additionally Apollo is used
-   - which functions like a layer of glue
-   - by allowing to use GraphQL in the frontend directly,
-   - instead the backend
+6. React with Apollo or GraphiQL explorer can be used
+   - to let users trigger queries
+   - from the browser
