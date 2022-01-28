@@ -7,9 +7,8 @@ GraphQL is not meant to be directly INTERACTED with
 
 # GraphiQL
 
-Is a
+Is a dummy frontend application
 
-- dummy frontend application
 - which enables to test queries to a GraphQL server
 
 # Setup GraphiQL
