@@ -1,7 +1,7 @@
 const { GraphQLInt } = require("graphql");
 const graphql = require("graphql");
 const _ = require("lodash");
-const Movie = require("../models/movie");
+const MovieModel = require("../models/movie");
 const Director = require("../models/director");
 
 // Import different objects from GraphQL package
@@ -92,9 +92,49 @@ const RootQuery = new GraphQLObjectType({
   }),
 });
 
+// Mutations allow to add, delete, or edit e.g. a movie
+const Mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    addDirector: {
+      type: DirectorType,
+      args: {
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt },
+      },
+      resolve(parent, args) {
+        let director = new Director({
+          // Enables to create a director based on the provided args with the Director Model
+          // @ts-ignore
+          name: args.name,
+          age: args.age,
+        });
+        return director.save(); // Enables to save the instance of the director model, so a mongodb document, to the database
+      },
+    },
+    addMovie: {
+      type: MovieType,
+      args: {
+        name: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        directorId: { type: GraphQLID },
+      },
+      resolve(parent, args) {
+        let movie = new MovieModel({
+          name: args.name,
+          genre: args.genre,
+          directorId: args.directorId,
+        });
+        return movie.save();
+      },
+    },
+  },
+});
+
 // Exports the schema,
 // which includes the query
 // and the respective object types
 module.exports = new GraphQLSchema({
   query: RootQuery,
+  mutation: Mutation,
 });
