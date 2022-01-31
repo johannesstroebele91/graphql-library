@@ -2,9 +2,13 @@ const express = require("express");
 const { graphqlHTTP } = require("express-graphql"); // {} enables to destructure only certain objects of the complete express package
 const schema = require("./schema/schema");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 // Create express app
 const app = express();
+
+// Enables to let the separat client talk to the GraphQL server (apollo client)
+app.use(cors());
 
 // Mongoose enables to easily connect the express app with the MongoDB
 const CONNECTION_URL =
