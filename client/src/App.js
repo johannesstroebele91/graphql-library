@@ -14,7 +14,7 @@ function App() {
     // and inject the received data to all components that are children of the ApolloProvider wrapper
     // by dynamically injecting the data via `client={client}`
     <ApolloProvider client={client}>
-      <h1>Watch list</h1>
+      <h1>Movies Watch List</h1>
       <MovieList />
     </ApolloProvider>
   );
