@@ -19,3 +19,9 @@ The React app has components (e.g. MovieList, or AddMovie)
 - The GraphQL server then will go to the MongoDB
 - grab the respective data
 - and return it back
+
+# HowToSetup
+
+1. Create initial React project with `npx create-react-app client --use-npm`
+2. App can be served with `npm start`
+3. Running app can be accessed in the browser via `localhost:3000` (runs seperately from the server, which runs on `localhost:5000`)
