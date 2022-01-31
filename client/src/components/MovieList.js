@@ -29,11 +29,11 @@ export default function MovieList() {
           key={movie.id}
           style={{
             display: "inline-block",
-            minWidth: "300px",
+            minWidth: "240px",
             background: "#FFFFFF",
-            borderRadius: "6px",
-            padding: "6px",
-            margin: "6px",
+            borderRadius: "3px",
+            padding: "12px",
+            margin: "12px",
           }}
         >
           <h3>{movie.name}</h3>

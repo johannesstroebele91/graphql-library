@@ -1,4 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import AddMovie from "./components/AddMovie";
 import MovieList from "./components/MovieList";
 
 // Setup Apollo Client
@@ -14,8 +15,9 @@ function App() {
     // and inject the received data to all components that are children of the ApolloProvider wrapper
     // by dynamically injecting the data via `client={client}`
     <ApolloProvider client={client}>
-      <h1>Movies Watch List</h1>
+      <h1 style={{ textAlign: "center" }}>Movies Watch List</h1>
       <MovieList />
+      <AddMovie />
     </ApolloProvider>
   );
 }
