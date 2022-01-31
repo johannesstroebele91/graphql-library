@@ -1,16 +1,6 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React from "react";
-
-// Create the query in backticks ``
-const GET_MOVIES_QUERY = gql`
-  {
-    movies {
-      name
-      genre
-      id
-    }
-  }
-`;
+import { GET_MOVIES_QUERY } from "../queries/queries";
 
 export default function MovieList() {
   // Bind the query to the MovieList component via useQuery()
