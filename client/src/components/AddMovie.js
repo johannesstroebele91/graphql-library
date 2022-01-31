@@ -1,6 +1,6 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { React, useState } from "react";
-import { GET_DIRECTORS_QUERY } from "../queries/queries";
+import { ADD_MOVIE_MUTATION, GET_DIRECTORS_QUERY } from "../queries/queries";
 
 export default function AddMovie() {
   const [name, setName] = useState("");
@@ -11,10 +11,17 @@ export default function AddMovie() {
   // which is a hook that triggers a rerender the component each time the data updates
   const { loading, data: { directors } = {}, error } = useQuery(GET_DIRECTORS_QUERY);
 
+  const [addMovie] = useMutation(ADD_MOVIE_MUTATION);
+
   const handleSubmit = (event) => {
     // Normal refresh behaviour needs to be prevented
     event.preventDefault();
-    console.log(name, genre, directorId);
+
+    // Executes the mutation based on
+    // the update the state
+    // which is again based on the values that were inputed into the form fields
+    // PS `name: name` can be written as `name`
+    addMovie({ variables: { name, genre, directorId } });
   };
 
   const renderDirectors = () => {
@@ -22,7 +29,6 @@ export default function AddMovie() {
     if (error) return <option disabled>Something went wrong</option>;
     return (
       <>
-        <h3>Add movie</h3>
         {directors.map((director) => {
           return (
             <option key={director.id} value={director.id}>
@@ -46,6 +52,7 @@ export default function AddMovie() {
         margin: "12px",
       }}
     >
+      <h3>Add movie</h3>
       <div className="form-group">
         <label htmlFor="movie-name">Movie Name:</label>
         <input className="form-control mt-1" id="movie-name" name="movie-name" type="text" onChange={(event) => setName(event.target.value)} />
