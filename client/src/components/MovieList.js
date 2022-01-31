@@ -14,16 +14,23 @@ const GET_MOVIES_QUERY = gql`
 
 export default function MovieList() {
   // Bind the query to the MovieList component via useQuery()
-  const { loading, data: movies, error } = useQuery(GET_MOVIES_QUERY);
-  console.log(movies);
-  return (
-    <ul>
-      <li>Movie List</li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-  );
+  // which is a hook that triggers a rerender the component each time the data updates
+  const { loading, data, error } = useQuery(GET_MOVIES_QUERY);
+
+  if (error) return <p>Error while requesting data</p>;
+
+  if (loading) return <p>Data is loading ...</p>;
+
+  const renderMovies = () => {
+    return data.movies.map((movie) => {
+      return (
+        <div key={movie.id}>
+          <h3>{movie.name}</h3>
+          <p>{movie.genre}</p>
+        </div>
+      );
+    });
+  };
+
+  return <>{renderMovies()}</>;
 }
