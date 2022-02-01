@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { React, useState } from "react";
-import { ADD_MOVIE_MUTATION, GET_DIRECTORS_QUERY } from "../queries/queries";
+import { useState } from "react";
+import { ADD_MOVIE_MUTATION, GET_DIRECTORS_QUERY, GET_MOVIES_QUERY } from "../queries/queries";
 
 export default function AddMovie() {
   const [name, setName] = useState("");
@@ -21,7 +21,8 @@ export default function AddMovie() {
     // the update the state
     // which is again based on the values that were inputed into the form fields
     // PS `name: name` can be written as `name`
-    addMovie({ variables: { name, genre, directorId } });
+    // PS refetchQueries enables to refetch the changed movies
+    addMovie({ variables: { name, genre, directorId }, refetchQueries: [{ query: GET_MOVIES_QUERY }] });
   };
 
   const renderDirectors = () => {
