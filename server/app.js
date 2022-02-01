@@ -27,7 +27,7 @@ app.use(
   "/graphql",
   graphqlHTTP({
     schema, // or long: schema: schema
-    graphiql: true,
+    graphiql: true, // for showing query interface GraphiQL
   })
 );
 
