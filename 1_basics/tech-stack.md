@@ -1,3 +1,12 @@
+# Explanation
+
+GraphQL is compatible with a lot of frameworks
+
+- in the frontend: React, Angular, Vue.js
+- in the backend: Node.js, Express, ...
+
+# Tech Sack
+
 1. A GrapQL server needs to be installed on a **Node.js server**
 
    - where also a e.g. an express app is installed

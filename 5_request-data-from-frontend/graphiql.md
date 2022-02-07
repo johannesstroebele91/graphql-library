@@ -4,7 +4,11 @@ GraphiQL is a web interface which enables to
 
 - enables to run GraphQL queries
 - directly in the browser
-- (so dummy frontend application to test queries to a GraphQL server)
+
+It is a dummy frontend application
+
+- to test queries
+- to a GraphQL server
 
 # Setup GraphiQL
 

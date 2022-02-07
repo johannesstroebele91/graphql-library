@@ -1,4 +1,10 @@
-# Rest
+- [1. Rest](#1-rest)
+- [2. GraphQL](#2-graphql)
+- [3. Detailed explanation](#3-detailed-explanation)
+- [4. Why "graph" QL?](#4-why-graph-ql)
+- [5. Example](#5-example)
+
+# 1. Rest
 
 REST enables to
 
@@ -11,59 +17,41 @@ Examples for enpoint could be:
 - Getting a particular movie: e.g. domain.com/movies/:id
 - Getting a the director of a movie: e.g. domain.com/directory/:id
 
-# GraphQL
+# 2. GraphQL
 
-GraphQL is a declarative, strongly-typed query language which ALSO enablest to
+GraphQL is a query language which is
 
-- query web APIs
-- whereby it does not enable to query directly a database (PostgreSQL) like with SQL
+- declarative and
+- strongly-typed
 
-So the GraphQL enables
+It does NOT enable to
 
-- to communicate data
-- between a client, the browser, and a server
+- query directly a database (PostgreSQL) like with SQL
+- but enables to query a web API
 
-React App can make queries
+# 3. Detailed explanation
 
+GraphQL exposes queries or Mutations
+
+- via a web API
+- that can be accessed from the frontend
+- via React, GraphiQL, ...
+
+In the frontend a field can be requested
+
+- because it is a field declard in the query type
+- and when the server receives the request
+- it will map it to the resolver function for the field
+- which results in the requested data being returned
+
+So users can make queries
+
+- via the browser (frontend)
 - againt a GraphQL server,
 - which collects the data for you
 - and in turn sends the data back to the React app
 
-The difference between REST and GraphQL is
-
-- overfetching and
-- underfetching
-
-## 1) Overfetching
-
-GraphQL enables to define
-
-- the exact data shape and contents
-- that they need in a single request
-
-So GraphQL enables
-
-- that the client has FULL control over the data it wants
-- from the server
-- (with REST you always get all the data from that resource)
-
-## 2) Underfetching
-
-GraphQL enables to
-
-- fetch multiple resources
-- in one call to the server
-- (with REST you always need to make multiple calls for this)
-
-# Type system or schema
-
-GraphQL requires the use of a schema to
-
-- that makes a clear contract between the server and clients
-- so both sides know what they can be requested and retrieved
-- (also possible with REST using e.g. swagger)
-
-# Why "graph" QL?
+# 4. Why "graph" QL?
 
 Is just one "super-charged" enpoint
 
@@ -89,7 +77,24 @@ Example of a GraphQL request:
 }
 ```
 
-# Compatability
+# 5. Example
 
-- does not only work with React,
-- but also Vue.js or Angular
+Query:
+
+```
+query {
+    message
+}
+```
+
+Response:
+
+can be "data" or "error"
+
+```
+{
+  "data": {
+    "message": "Hello from the GraphQL server!"
+  }
+}
+```
