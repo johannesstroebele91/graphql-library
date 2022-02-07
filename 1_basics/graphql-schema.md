@@ -1,5 +1,11 @@
 # Explanation
 
+Is inteface of the API
+
+- which describes what the API can do
+- so what a query might return
+- PS can contain multiple queries that can be made
+
 Schema needs to do 3 things
 
 1. explain object types needs (e.g. movie and director)

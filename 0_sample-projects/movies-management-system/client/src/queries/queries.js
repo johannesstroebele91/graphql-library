@@ -12,6 +12,7 @@ const GET_MOVIES_QUERY = gql`
   }
 `;
 
+// TODO: in fragment auslagern
 const GET_DIRECTORS_QUERY = gql`
   {
     directors {
@@ -54,4 +55,9 @@ const ADD_MOVIE_MUTATION = gql`
   }
 `;
 
-export { GET_MOVIES_QUERY, GET_DIRECTORS_QUERY, ADD_MOVIE_MUTATION, GET_MOVIE_QUERY };
+export {
+  GET_MOVIES_QUERY,
+  GET_DIRECTORS_QUERY,
+  ADD_MOVIE_MUTATION,
+  GET_MOVIE_QUERY,
+};

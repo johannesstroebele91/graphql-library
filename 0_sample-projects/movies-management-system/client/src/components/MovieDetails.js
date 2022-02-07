@@ -9,7 +9,6 @@ export default function MovieDetails(props) {
   } = useQuery(GET_MOVIE_QUERY, {
     variables: { id: props.selectedMovieId },
   });
-  console.log(props);
 
   if (error) return <p>There is an error for the query ...</p>;
   if (loading) return <p>Data is loading ...</p>;

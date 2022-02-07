@@ -25,6 +25,7 @@ const MovieType = new GraphQLObjectType({
     id: { type: GraphQLID }, // ID enables to pass not "1", but just 1 (= more flexible)
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+
     // Relationship between types can be defined as follows
     // a type can be reused
     // and the parent parameter be used to find the director

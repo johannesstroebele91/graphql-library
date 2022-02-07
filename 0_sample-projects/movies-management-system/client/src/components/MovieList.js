@@ -8,7 +8,6 @@ export default function MovieList() {
   // which is a hook that triggers a rerender the component each time the data updates
   // PS Destructuring the destructured data object can be done with `{}` around movies
   const { loading, data: { movies } = {}, error } = useQuery(GET_MOVIES_QUERY);
-
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   if (error) return <p>Error while requesting data</p>;
 

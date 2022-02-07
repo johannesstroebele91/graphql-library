@@ -1,8 +1,10 @@
 # Basics
 
-Is a dummy frontend application
+GraphiQL is a web interface which enables to
 
-- which enables to test queries to a GraphQL server
+- enables to run GraphQL queries
+- directly in the browser
+- (so dummy frontend application to test queries to a GraphQL server)
 
 # Setup GraphiQL
 
