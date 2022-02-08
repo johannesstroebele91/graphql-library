@@ -1,5 +1,8 @@
+const db = require("./db");
+
+// List jobs using JSON db
 const Query = {
-  greeting: () => "Hello world!",
+  jobs: () => db.jobs.list(),
 };
 
 module.exports = { Query };
