@@ -20,6 +20,11 @@ The advantage of the resolvers object is
 - to get some data from the database and
 - process it in some way
 
+It also manages the associations
+
+- between different objects
+- e.g. Jobs and Companies -> which Job does one Company have?
+
 # Example
 
 server.js

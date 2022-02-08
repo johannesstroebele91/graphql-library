@@ -1,10 +1,18 @@
 # Array of jobs
 type Query {
   jobs: [Job]
+  companies: [Company]
 }
 
 type Job {
   id: ID!
   title: String
+  company: Company
+  description: String
+}
+
+type Company {
+  id: ID!
+  name: String
   description: String
 }
