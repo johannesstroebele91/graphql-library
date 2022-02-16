@@ -69,4 +69,6 @@ app.post("/login", (req, res) => {
   res.send({ token });
 });
 
-app.listen(port, () => console.info(`Server started on port ${port}`));
+app.listen(port, () =>
+  console.info(`Server started on port ${port}: http://localhost:${port}/`)
+);
