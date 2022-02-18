@@ -1,4 +1,4 @@
-import { queryJob, queryJobs } from "./queries";
+import { queryCompany, queryJob, queryJobs } from "./queries";
 
 const endpointURL = "http://localhost:9000/graphql";
 
@@ -39,4 +39,9 @@ export async function loadJob(id) {
 export async function loadJobs() {
   const { jobs } = await graphQLRequest(queryJobs);
   return jobs;
+}
+
+export async function loadCompany(id) {
+  const { company } = await graphQLRequest(queryCompany, { id });
+  return company;
 }

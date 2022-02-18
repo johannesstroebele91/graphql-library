@@ -13,14 +13,12 @@ export const JobDetail = (props) => {
     const fetchJob = async () => {
       const fetchedJob = await loadJob(jobId);
       setJob(fetchedJob);
-      console.log(fetchedJob);
     };
     fetchJob();
   }, [jobId, setJob]);
 
-  // Important to
   if (!job) {
-    return <p>Job is loading</p>;
+    return <p>Data is loading...</p>;
   }
 
   return (

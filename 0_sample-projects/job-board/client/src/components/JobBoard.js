@@ -16,6 +16,10 @@ export function JobBoard() {
     fetchJobs();
   }, [setJobs]);
 
+  if (!jobs) {
+    return <p>Data is loading...</p>;
+  }
+
   return (
     <div>
       <h1 className="title">Job Board</h1>

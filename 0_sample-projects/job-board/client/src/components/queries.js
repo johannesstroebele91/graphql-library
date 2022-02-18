@@ -24,3 +24,12 @@ export const queryJob = `query JobQuery($id: ID!) {
         }
       }
       `;
+
+export const queryCompany = `query CompanyQuery($id: ID!) {
+        company(id: $id) {
+          id
+          name
+          description
+        }
+      }
+      `;

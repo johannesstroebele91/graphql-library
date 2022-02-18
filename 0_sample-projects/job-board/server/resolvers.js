@@ -5,10 +5,13 @@ const Query = {
   // PS object destructuring can be used to make it easier to read
   // so NOT "args" but "{id}"
   job: (root, { id }) => db.jobs.get(id),
+
   // List jobs using JSON db
   // Additional nested objects are possible
   // Associations between different objects needs to be set in the resolver
   jobs: () => db.jobs.list(),
+
+  company: (root, { id }) => db.companies.get(id),
 };
 
 // Parent object for each company is the job
