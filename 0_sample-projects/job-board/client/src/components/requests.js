@@ -1,11 +1,6 @@
 const endpointURL = "http://localhost:9000/graphql";
 
-export async function loadJobs() {
-  const response = await fetch(endpointURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query: `{
+const queryJobs = `{
         jobs {
           id
           title
@@ -17,24 +12,9 @@ export async function loadJobs() {
           description
         }
       }
-      `,
-    }),
-  });
-  const responseBody = await response.json();
-  return responseBody.data.jobs;
-}
+      `;
 
-// GraphQL enables to pass dynamic variables into the query
-// using the query keyword
-// the variable needs to be specified like e.g. "$id: ID!"
-// PS operational name can be specified behind "query" for debugging only
-// PS variables can be specified in the playground in the query variables section like e.g. "{"id": "SJRAZDu_z"}"
-export async function loadJob(id) {
-  const response = await fetch(endpointURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query: `query JobQuery($id: ID!) {
+const queryJob = `query JobQuery($id: ID!) {
         job(id: $id) {
           id
           title
@@ -46,10 +26,35 @@ export async function loadJob(id) {
           description
         }
       }
-      `,
-      variables: { id },
+      `;
+
+// GraphQL enables to pass dynamic variables into the query
+// using the query keyword
+// the variable needs to be specified like e.g. "$id: ID!"
+
+// Operational name can be specified behind "query" for debugging only
+// Variables can be specified in the playground in the query variables section like e.g. "{"id": "SJRAZDu_z"}"
+// Better to make a flexible request via e.g. "graphQLRequest", if the content has only minor variations
+// (optional variables need to be initialized with ""={}"")
+async function graphQLRequest(query, variables = {}) {
+  const response = await fetch(endpointURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: query,
+      variables: variables,
     }),
   });
   const responseBody = await response.json();
-  return responseBody.data.job;
+  return responseBody.data;
+}
+
+export async function loadJob(id) {
+  const { job } = await graphQLRequest(queryJob, { id });
+  return job;
+}
+
+export async function loadJobs() {
+  const { jobs } = await graphQLRequest(queryJobs);
+  return jobs;
 }
