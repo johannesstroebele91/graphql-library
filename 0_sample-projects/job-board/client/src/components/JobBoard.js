@@ -10,9 +10,8 @@ export function JobBoard() {
     // A async function needs to be created to call loadJobs,
     // because useEffect cannot be made async!!!
     const fetchJobs = async () => {
-      const jobs = await loadJobs();
-      setJobs(jobs);
-      console.log(jobs);
+      const fetchedJobs = await loadJobs();
+      setJobs(fetchedJobs);
     };
     fetchJobs();
   }, [setJobs]);

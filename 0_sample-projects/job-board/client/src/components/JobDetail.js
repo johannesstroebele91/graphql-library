@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { jobs } from "./fake-data";
+import { loadJob } from "./requests";
 
 export const JobDetail = (props) => {
   const { jobId } = props.match.params;
-  const job = jobs.find((job) => job.id === jobId);
+  const [job, setJob] = useState(null);
+
+  //  load data from the server
+  useEffect(() => {
+    // A async function needs to be created to call loadJob,
+    // because useEffect cannot be made async!!!
+    const fetchJob = async () => {
+      const fetchedJob = await loadJob(jobId);
+      setJob(fetchedJob);
+      console.log(fetchedJob);
+    };
+    fetchJob();
+  }, [jobId, setJob]);
+
+  // Important to
+  if (!job) {
+    return <p>Job is loading</p>;
+  }
 
   return (
     <div>

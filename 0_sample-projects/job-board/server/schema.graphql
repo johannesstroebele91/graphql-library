@@ -1,5 +1,6 @@
 # Array of jobs
 type Query {
+  job(id: ID!): Job
   jobs: [Job]
   companies: [Company]
 }

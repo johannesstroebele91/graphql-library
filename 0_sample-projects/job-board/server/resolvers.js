@@ -1,9 +1,13 @@
 const db = require("./db");
 
-// List jobs using JSON db
-// Additional nested objects are possible
-// Associations between different objects needs to be set in the resolver
 const Query = {
+  // args contains the arguments passed in the GraphQL query
+  // PS object destructuring can be used to make it easier to read
+  // so NOT "args" but "{id}"
+  job: (root, { id }) => db.jobs.get(id),
+  // List jobs using JSON db
+  // Additional nested objects are possible
+  // Associations between different objects needs to be set in the resolver
   jobs: () => db.jobs.list(),
 };
 
