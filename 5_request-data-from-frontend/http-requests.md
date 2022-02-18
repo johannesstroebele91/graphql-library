@@ -15,7 +15,7 @@ In summary,
 
 - Request URL:
   - is the URL where the GraphQL server is running
-  - http://localhost:XXXX/
+  - http://localhost:XXXX/graphql
 - Method:
   - due to GraphQL always POST requests are made
   - although you only want to get that data like with REST
@@ -39,7 +39,7 @@ In summary,
 # Example
 
 1. Start app
-2. In the browser visit http://localhost:XXXX/
+2. In the browser visit http://localhost:XXXX/graphql
 3. Open the network tools
 4. Send a query via GraphQL playground
 5. Open up GraphQL Network tab (GraphQL Network Inspector) OR normal network tab

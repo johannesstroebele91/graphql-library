@@ -19,10 +19,10 @@ GraphQL playground is
 # Setup GraphiQL
 
 1. Start the app
-2. Use GraphQL playground in browser via e.g. http://localhost:XXXX/
+2. Use GraphQL playground in browser via e.g. http://localhost:XXXX/graphl
 
 # Setup GraphiQL
 
 1. Set graphqlHTTP({graphiql: true}) in **app.js**
 2. restart app
-3. Use GraphiQL in browser via e.g. http://localhost:XXXX/graphql
+3. Use GraphiQL in browser via e.g. http://localhost:XXXX/graphiql

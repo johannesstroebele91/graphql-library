@@ -21,6 +21,6 @@ Express is a web application framework for Node. js
 
 6. Setup code for GraphQL server (see **app.js** or **server.js**)
 7. Connect GraphQL server with express (see **server.js**)
-8. Access GraphQL server (e.g. http://localhost:XXXX/???)
+8. Access GraphQL server (e.g. http://localhost:XXXX/graphql)
 9. Create a schema
 10. Create resolvers

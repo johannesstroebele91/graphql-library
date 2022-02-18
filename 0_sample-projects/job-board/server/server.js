@@ -70,5 +70,7 @@ app.post("/login", (req, res) => {
 });
 
 app.listen(port, () =>
-  console.info(`Server started on port ${port}: http://localhost:${port}/`)
+  console.info(
+    `Server started on port ${port}: http://localhost:${port}/graphql`
+  )
 );
