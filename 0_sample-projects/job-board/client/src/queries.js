@@ -30,6 +30,10 @@ export const queryCompany = `query CompanyQuery($id: ID!) {
           id
           name
           description
+          jobs {
+            id
+            title
+          }
         }
       }
       `;
