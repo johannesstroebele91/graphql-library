@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { loadJob } from "./requests";
+import { loadJob } from "../requests";
 
 export const JobDetail = (props) => {
   const { jobId } = props.match.params;

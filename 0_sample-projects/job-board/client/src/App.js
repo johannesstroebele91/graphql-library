@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
-import { logout } from "./components/auth";
+import { logout } from "./auth";
 import { CompanyDetail } from "./components/CompanyDetail";
 import { JobBoard } from "./components/JobBoard";
 import { JobDetail } from "./components/JobDetail";

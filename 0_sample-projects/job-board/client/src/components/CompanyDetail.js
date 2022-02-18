@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { loadCompany } from "./requests";
+import { loadCompany } from "../requests";
 
 export const CompanyDetail = (props) => {
   const { companyId } = props.match.params;
