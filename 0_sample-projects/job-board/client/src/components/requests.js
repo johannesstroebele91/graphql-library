@@ -1,32 +1,6 @@
+import { queryJob, queryJobs } from "./queries";
+
 const endpointURL = "http://localhost:9000/graphql";
-
-const queryJobs = `{
-        jobs {
-          id
-          title
-          company {
-            id
-            name
-            description
-          }
-          description
-        }
-      }
-      `;
-
-const queryJob = `query JobQuery($id: ID!) {
-        job(id: $id) {
-          id
-          title
-          company {
-            id
-            name
-            description
-          }
-          description
-        }
-      }
-      `;
 
 // GraphQL enables to pass dynamic variables into the query
 // using the query keyword
@@ -46,6 +20,14 @@ async function graphQLRequest(query, variables = {}) {
     }),
   });
   const responseBody = await response.json();
+
+  if (responseBody.errors) {
+    const message = responseBody.errors
+      .map((error) => error.message)
+      .join("\n");
+    throw new Error(message);
+  }
+
   return responseBody.data;
 }
 
