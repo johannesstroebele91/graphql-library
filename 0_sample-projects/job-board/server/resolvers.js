@@ -1,5 +1,6 @@
 const db = require("./db");
 
+// 1) QUERY
 const Query = {
   // args contains the arguments passed in the GraphQL query
   // PS object destructuring can be used to make it easier to read
@@ -26,4 +27,14 @@ const Company = {
     db.jobs.list().filter((job) => job.companyId === company.id),
 };
 
-module.exports = { Query, Job, Company };
+// 2) MUTATION
+// Parameters
+// a) parent object (root)
+// b) object based on the GraphQL arguments defined in the schema
+const Mutation = {
+  createJob: (root, { companyId, title, description }) => {
+    return db.jobs.create({ companyId, title, description });
+  },
+};
+
+module.exports = { Query, Mutation, Job, Company };
