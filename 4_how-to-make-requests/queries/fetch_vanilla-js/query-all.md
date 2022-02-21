@@ -1,6 +1,37 @@
-# Examples
+# 1. Backend
 
-# 1) Requests `job-board/client/src/requests.js`
+## 1.1. Schema `job-board/server/schema.graphql`
+
+```graphql
+type Query {
+  jobs: [Job]
+}
+
+type Job {
+  id: ID!
+  title: String
+  company: Company
+  description: String
+}
+```
+
+## 1.2. Resolvers `job-board/server/resolvers.js`
+
+List jobs using JSON db
+
+```javascript
+const db = require("./db");
+
+const Query = {
+  jobs: () => db.jobs.list(),
+};
+
+module.exports = { Query };
+```
+
+# 2. Frontend
+
+## 2.1. requests.js `job-board/client/src/requests.js`
 
 ```javascript
 const endpointURL = "http://localhost:9000/graphql";
@@ -30,7 +61,7 @@ export async function loadJobs() {
 }
 ```
 
-# 2) Trigger request from React component `job-board/client/src/components/JobBoard.js`
+## 2.2. React component `job-board/client/src/components/JobBoard.js`
 
 ```javascript
 export function JobBoard() {
@@ -57,5 +88,26 @@ export function JobBoard() {
       <JobList jobs={jobs} />
     </div>
   );
+}
+```
+
+# Response
+
+```JSON
+{
+  "data": {
+    "jobs": [
+      {
+        "id": "rJKAbDd_z",
+        "title": "Frontend Developer",
+        "company": {
+          "id": "HJRa-DOuG",
+          "name": "Facegle",
+          "description": "We are a startup on a mission to disrupt social search engines. Think Facebook meet Google."
+        },
+        "description": "We are looking for a Frontend Developer familiar with React."
+      },
+    ]
+  }
 }
 ```

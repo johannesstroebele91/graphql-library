@@ -46,13 +46,15 @@ In summary,
 
 **Request**
 
-```
-query{message}
+```graphql
+query {
+  message
+}
 ```
 
 **Response**
 
-```graphql
+```json
 {
   "data": {
     "message": "Hello from the GraphQL server!"

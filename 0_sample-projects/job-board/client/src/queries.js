@@ -11,6 +11,7 @@ export const QUERY_JOBS = `{
         }
       }
       `;
+
 export const QUERY_JOB = `query JobQuery($id: ID!) {
         job(id: $id) {
           id
@@ -38,7 +39,8 @@ export const QUERY_COMPANY = `query CompanyQuery($id: ID!) {
       }
       `;
 
-export const MUTATION_CREATE_JOB = `mutation CreateJob($input: CreateJobInput) {
+export const MUTATION_CREATE_JOB = `
+  mutation CreateJob($input: CreateJobInput) {
         job: createJob(input: $input) {
           id
           title
