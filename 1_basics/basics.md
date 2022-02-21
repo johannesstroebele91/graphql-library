@@ -1,23 +1,9 @@
-- [1. Rest](#1-rest)
-- [2. GraphQL](#2-graphql)
-- [3. Detailed explanation](#3-detailed-explanation)
-- [4. Why "graph" QL?](#4-why-graph-ql)
-- [5. Example](#5-example)
+- [1. Basics](#1-basics)
+- [2. Explanation](#2-explanation)
+- [3. Why "graph" QL?](#3-why-graph-ql)
+- [4. Example](#4-example)
 
-# 1. Rest
-
-REST enables to
-
-- make queries or request to web APIs it via e.g. an React app
-- which enbables to retrieve certain data
-- to display e.g. display movies and directors from a database
-
-Examples for enpoint could be:
-
-- Getting a particular movie: e.g. domain.com/movies/:id
-- Getting a the director of a movie: e.g. domain.com/directory/:id
-
-# 2. GraphQL
+# 1. Basics
 
 GraphQL is a query language which is
 
@@ -29,7 +15,7 @@ It does NOT enable to
 - query directly a database (PostgreSQL) like with SQL
 - but enables to query a web API
 
-# 3. Detailed explanation
+# 2. Explanation
 
 GraphQL exposes queries or Mutations
 
@@ -51,7 +37,7 @@ So users can make queries
 - which collects the data for you
 - and in turn sends the data back to the React app
 
-# 4. Why "graph" QL?
+# 3. Why "graph" QL?
 
 Is just one "super-charged" enpoint
 
@@ -59,39 +45,19 @@ Is just one "super-charged" enpoint
 - that are accessed like a waterfall
 - so first movie, then director, then movies of the director
 
-Example of a GraphQL request:
+# 4. Example
 
-```
-{
-    movie(id: 1) {
-        name
-        gernre
-        director {
-            name
-            age
-            movies{
-                name
-            }
-        }
-    }
-}
-```
+Query message:
 
-# 5. Example
-
-Query:
-
-```
+```graphql
 query {
-    message
+  message
 }
 ```
 
-Response:
+Response can be "data" or "error"
 
-can be "data" or "error"
-
-```
+```json
 {
   "data": {
     "message": "Hello from the GraphQL server!"
