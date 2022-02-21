@@ -57,7 +57,7 @@ Tipps:
 
 Types:
 
-1. Mutating with static arguments
+1. Mutating with static arguments `mutation-static-args.md`
 2. Mutating with dynamic arguments
-   1. For a few arguments (output type)
-   2. For many arguments (input type)
+   1. For a few arguments (output type) `mutation-few-dynamic-args.md`
+   2. For many arguments (input type) `mutation-many-dynamic-args.md`
