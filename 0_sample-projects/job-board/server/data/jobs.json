@@ -28,5 +28,11 @@
     "companyId": "SJV0-wdOM",
     "title": "Full Stack Developer",
     "description": "Testing"
+  },
+  {
+    "id": "rk7Pg7bgc",
+    "companyId": "SJV0-wdOM",
+    "title": "DevOps Manager",
+    "description": "Restart server if they go down"
   }
 ]

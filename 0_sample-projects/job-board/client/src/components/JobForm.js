@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { createJob } from "../requests";
 
 export const JobForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  let history = useHistory();
 
   const handleChangeTitle = (e) => {
     setTitle(e.target.value);
@@ -14,6 +17,10 @@ export const JobForm = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
+    const companyId = "SJV0-wdOM"; // TODO fix id later
+    createJob({ companyId, title, description }).then((job) => {
+      history.push(`/jobs/${job.id}`);
+    });
   };
 
   return (

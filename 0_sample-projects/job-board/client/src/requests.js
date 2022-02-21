@@ -1,4 +1,9 @@
-import { queryCompany, queryJob, queryJobs } from "./queries";
+import {
+  MUTATION_CREATE_JOB,
+  QUERY_COMPANY,
+  QUERY_JOB,
+  QUERY_JOBS,
+} from "./queries";
 
 const endpointURL = "http://localhost:9000/graphql";
 
@@ -10,7 +15,7 @@ const endpointURL = "http://localhost:9000/graphql";
 // Variables can be specified in the playground in the query variables section like e.g. "{"id": "SJRAZDu_z"}"
 // Better to make a flexible request via e.g. "graphQLRequest", if the content has only minor variations
 // (optional variables need to be initialized with ""={}"")
-async function graphQLRequest(query, variables = {}) {
+async function graphqlRequest(query, variables = {}) {
   const response = await fetch(endpointURL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -32,16 +37,21 @@ async function graphQLRequest(query, variables = {}) {
 }
 
 export async function loadJob(id) {
-  const { job } = await graphQLRequest(queryJob, { id });
+  const { job } = await graphqlRequest(QUERY_JOB, { id });
   return job;
 }
 
 export async function loadJobs() {
-  const { jobs } = await graphQLRequest(queryJobs);
+  const { jobs } = await graphqlRequest(QUERY_JOBS);
   return jobs;
 }
 
 export async function loadCompany(id) {
-  const { company } = await graphQLRequest(queryCompany, { id });
+  const { company } = await graphqlRequest(QUERY_COMPANY, { id });
   return company;
+}
+
+export async function createJob(input) {
+  const { job } = await graphqlRequest(MUTATION_CREATE_JOB, { input });
+  return job;
 }
