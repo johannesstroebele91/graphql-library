@@ -1,18 +1,3 @@
-- [Basics](#basics)
-- [1. Examples using Apollo Client hooks `movies-management-system/client/src/components/MovieDetails.js`](#1-examples-using-apollo-client-hooks-movies-management-systemclientsrccomponentsmoviedetailsjs)
-- [2. Examples using Vanilla JS fetch() function](#2-examples-using-vanilla-js-fetch-function)
-- [2.1. Request movies `movies-management-system/client/src/queries/queries.js`](#21-request-movies-movies-management-systemclientsrcqueriesqueriesjs)
-- [2.2. Request a single using variables `movies-management-system/client/src/queries/queries.js`](#22-request-a-single-using-variables-movies-management-systemclientsrcqueriesqueriesjs)
-- [2.3. Request a single movie hardcoded (no example)](#23-request-a-single-movie-hardcoded-no-example)
-
-# Basics
-
-GraphQL enables to
-
-- requests all documents (e.g. movies)
-- only one document hardcoded (e.g. movie)
-- only one document using a variable (e.g. movie)
-
 # 1. Examples using Apollo Client hooks `movies-management-system/client/src/components/MovieDetails.js`
 
 useQuery hook for requesting data

@@ -1,13 +1,3 @@
-# Basics
-
-1. add request by creating a request funtion with
-   1. endpointURL, method, headers, body (query, _variables_) and
-   2. return the data
-2. specify query or mutation
-   1. based on the tipps in `make queries` and `make mutations`
-   2. outsource if there are too many (e.g. `movies-management-system/client/src/queries/queries.js`)
-3. component: call query with hooks (useQUery, useMutation) or the request function from the respective React componeng e.g. `JobBoard`
-
 # Examples
 
 # 1) Requests `job-board/client/src/requests.js`
