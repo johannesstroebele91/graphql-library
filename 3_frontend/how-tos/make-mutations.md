@@ -1,3 +1,8 @@
+- [Basics](#basics)
+- [Tipps](#tipps)
+- [1) Request without args](#1-request-without-args)
+- [2) Request with args](#2-request-with-args)
+
 # Basics
 
 Allow to change (e.g. add, delete, and edit)
@@ -13,12 +18,9 @@ Allow to change (e.g. add, delete, and edit)
   `mutation { job:createJob(companyId: "SJVO-wdOM", ...) {title ... } }`
 - Properties can be made not skipable by adding add to args property e.g. in schema.js ()
   `name: { type: new GraphQLNonNull(GraphQLString) }`
+- A response only appears if it is returned in the schema.js (does not have to be, to work)
 
-# Example
-
-_A response only appears if it is returned in the schema.js (does not have to be, to work)_
-
-Request without args
+# 1) Request without args
 
 ```graphql
 mutation {
@@ -46,7 +48,7 @@ Response
 }
 ```
 
-Request with args
+# 2) Request with args
 
 ```graphql
 mutation {

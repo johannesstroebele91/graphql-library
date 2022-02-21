@@ -10,5 +10,5 @@ It is important to handle errors
 This can be done
 
 - by throwing an error in the graphQLRequest function
-- using the `responseBody.errors` property
+- using the `responseBody.errors` property in files e.g. `requests.js`
 - as shown in the requests.js file
