@@ -32,8 +32,8 @@ const Company = {
 // a) parent object (root)
 // b) object based on the GraphQL arguments defined in the schema
 const Mutation = {
-  createJob: (root, { companyId, title, description }) => {
-    const id = db.jobs.create({ companyId, title, description });
+  createJob: (root, { input }) => {
+    const id = db.jobs.create(input);
     return db.jobs.get(id);
   },
 };
