@@ -41,11 +41,20 @@ const typeDefs = gql(fs.readFileSync("./schema.graphql", { encoding: "utf8" }));
 // In other words it is called to "resolve" the value of the "greeting" field
 const resolvers = require("./resolvers");
 
+// 5) Content
+// enables to pass application data (e.g. user)
+// to be used in the resoler
+const context = ({ req }) => ({ user: req.user });
+
 // 3) Apollo Server
 // ApolloServer constructor takes configuration properties
 // such as the schema "typeDef" and the resolvers
 // Written in shorthand here, because property name match the variable names above
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context,
+});
 // Login
 // Gets Email and the password from the request
 // Tries to find the user from the db

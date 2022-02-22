@@ -32,7 +32,11 @@ const Company = {
 // a) parent object (root)
 // b) object based on the GraphQL arguments defined in the schema
 const Mutation = {
-  createJob: (root, { input }) => {
+  createJob: (root, { input }, context) => {
+    if (!context.user) {
+      throw new Error("Unauthorized");
+    }
+
     const id = db.jobs.create(input);
     return db.jobs.get(id);
   },
