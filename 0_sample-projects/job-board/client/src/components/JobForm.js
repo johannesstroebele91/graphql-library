@@ -17,8 +17,7 @@ export const JobForm = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    const companyId = "SJV0-wdOM"; // TODO fix id later
-    createJob({ companyId, title, description }).then((job) => {
+    createJob({ title, description }).then((job) => {
       history.push(`/jobs/${job.id}`);
     });
   };

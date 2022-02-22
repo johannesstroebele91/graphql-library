@@ -44,7 +44,7 @@ const resolvers = require("./resolvers");
 // 5) Content
 // enables to pass application data (e.g. user)
 // to be used in the resoler
-const context = ({ req }) => ({ user: req.user });
+const context = ({ req }) => ({ user: req.user && db.users.get(req.user.sub) });
 
 // 3) Apollo Server
 // ApolloServer constructor takes configuration properties

@@ -34,5 +34,17 @@
     "companyId": "SJV0-wdOM",
     "title": "DevOps Manager",
     "description": "Restart server if they go down"
+  },
+  {
+    "id": "S1y7bszlc",
+    "companyId": "SJV0-wdOM",
+    "title": "Tester",
+    "description": "Somebody who is good at finding bugs"
+  },
+  {
+    "id": "SkqYTjflq",
+    "title": "Product Manager",
+    "description": "Manages tickets for developers",
+    "companyId": "HJRa-DOuG"
   }
 ]

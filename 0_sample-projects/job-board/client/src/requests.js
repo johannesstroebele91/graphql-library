@@ -1,3 +1,4 @@
+import { getAccessToken, isLoggedIn } from "./auth";
 import {
   MUTATION_CREATE_JOB,
   QUERY_COMPANY,
@@ -16,14 +17,19 @@ const endpointURL = "http://localhost:9000/graphql";
 // Better to make a flexible request via e.g. "graphQLRequest", if the content has only minor variations
 // (optional variables need to be initialized with ""={}"")
 async function graphqlRequest(query, variables = {}) {
-  const response = await fetch(endpointURL, {
+  const request = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: query,
       variables: variables,
     }),
-  });
+  };
+  if (isLoggedIn()) {
+    request.headers["authorization"] = "Bearer " + getAccessToken();
+  }
+
+  const response = await fetch(endpointURL, request);
   const responseBody = await response.json();
 
   if (responseBody.errors) {

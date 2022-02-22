@@ -26,7 +26,6 @@ type Job {
 
 # INPUT or parameter types
 input CreateJobInput {
-  companyId: ID
   title: String
   description: String
 }
