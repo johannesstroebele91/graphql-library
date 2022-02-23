@@ -1,4 +1,9 @@
-import { ApolloClient, HttpLink, InMemoryCache } from "apollo-boost";
+import {
+  ApolloClient,
+  ApolloLink,
+  HttpLink,
+  InMemoryCache,
+} from "apollo-boost";
 import { getAccessToken, isLoggedIn } from "./auth";
 import {
   MUTATION_CREATE_JOB,
@@ -9,8 +14,21 @@ import {
 
 const endpointURL = "http://localhost:9000/graphql";
 
+// Parameters of ApolloLink
+// operation: GraphQL query or mutation
+// forward: function to chain multiple steps together
+// Important: "authLink"  property needs to be stated before "link"!)
+const authLink = new ApolloLink((operation, forward) => {
+  if (isLoggedIn()) {
+    operation.setContext({
+      headers: { authorization: "Bearer " + getAccessToken() },
+    });
+  }
+
+  return forward(operation);
+});
 const client = new ApolloClient({
-  link: new HttpLink({ uri: endpointURL }),
+  link: ApolloLink.from([authLink, new HttpLink({ uri: endpointURL })]),
   cache: new InMemoryCache({}),
 });
 
@@ -22,6 +40,7 @@ const client = new ApolloClient({
 // Variables can be specified in the playground in the query variables section like e.g. "{"id": "SJRAZDu_z"}"
 // Better to make a flexible request via e.g. "graphQLRequest", if the content has only minor variations
 // (optional variables need to be initialized with ""={}"")
+/* JUST FOR REFERENCE
 async function graphqlRequest(query, variables = {}) {
   const request = {
     method: "POST",
@@ -46,7 +65,7 @@ async function graphqlRequest(query, variables = {}) {
   }
 
   return responseBody.data;
-}
+} */
 
 export async function loadJob(id) {
   const {

@@ -13,6 +13,7 @@
    - parameters: link to connect to the server entpoint, cache to use in memory cache
 10. Adapt requests for the client object (e.g. `job-board/client/src/requests.js`)
 11. Convert the query from a string into a structured object that can be understoof by Apollo Client using gql (e.g. `job-board/client/src/queries.js`)
+12. Authenticate requests using ApolloLink (e.g. `job-board/client/src/requests.js`)
 
 # Example setup apollo client for React `movies-management-system/client/src/App.js`:
 
