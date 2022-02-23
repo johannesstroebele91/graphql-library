@@ -1,0 +1,17 @@
+[
+  {
+    "id": "SJKhIAKYB",
+    "from": "system",
+    "text": "Welcome!"
+  },
+  {
+    "id": "r1-6G1Exq",
+    "from": "alice",
+    "text": "hello :)"
+  },
+  {
+    "id": "By08Ve4gc",
+    "from": "bob",
+    "text": "whats up?"
+  }
+]
