@@ -1,3 +1,4 @@
+import { ApolloClient, HttpLink, InMemoryCache } from "apollo-boost";
 import { getAccessToken, isLoggedIn } from "./auth";
 import {
   MUTATION_CREATE_JOB,
@@ -7,6 +8,11 @@ import {
 } from "./queries";
 
 const endpointURL = "http://localhost:9000/graphql";
+
+const client = new ApolloClient({
+  link: new HttpLink({ uri: endpointURL }),
+  cache: new InMemoryCache({}),
+});
 
 // GraphQL enables to pass dynamic variables into the query
 // using the query keyword
@@ -43,21 +49,32 @@ async function graphqlRequest(query, variables = {}) {
 }
 
 export async function loadJob(id) {
-  const { job } = await graphqlRequest(QUERY_JOB, { id });
+  const {
+    data: { job },
+  } = await client.query({ query: QUERY_JOB, variables: { id } });
   return job;
 }
 
 export async function loadJobs() {
-  const { jobs } = await graphqlRequest(QUERY_JOBS);
+  const {
+    data: { jobs },
+  } = await client.query({ query: QUERY_JOBS }); // more easy syntax: `data` an then `data.jobs`
   return jobs;
 }
 
 export async function loadCompany(id) {
-  const { company } = await graphqlRequest(QUERY_COMPANY, { id });
+  const {
+    data: { company },
+  } = await client.query({ query: QUERY_COMPANY, variables: { id } });
   return company;
 }
 
 export async function createJob(input) {
-  const { job } = await graphqlRequest(MUTATION_CREATE_JOB, { input });
+  const {
+    data: { job },
+  } = await client.mutate({
+    mutation: MUTATION_CREATE_JOB,
+    variables: { input },
+  });
   return job;
 }

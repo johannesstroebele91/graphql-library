@@ -32,6 +32,7 @@ So it
 
 - it makes it easier to write queries and mutations (e.g. useQuery and useMutation) AND
 - enables caching (avoid making unecessary same requests and use data that was retrieved earlier)
+- PS the cache can be persiteted to local storage
 
 Apollo Client is a
 
