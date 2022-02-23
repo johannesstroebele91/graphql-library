@@ -77,7 +77,7 @@ export async function loadJob(id) {
 export async function loadJobs() {
   const {
     data: { jobs },
-  } = await client.query({ query: QUERY_JOBS }); // more easy syntax: `data` an then `data.jobs`
+  } = await client.query({ query: QUERY_JOBS, fetchPolicy: "no-cache" }); // more easy syntax: `data` an then `data.jobs`
   return jobs;
 }
 
@@ -94,6 +94,13 @@ export async function createJob(input) {
   } = await client.mutate({
     mutation: MUTATION_CREATE_JOB,
     variables: { input },
+    update: (cache, { data }) => {
+      cache.writeQuery({
+        query: QUERY_JOB,
+        variables: { id: data.job.id },
+        data: data,
+      });
+    },
   });
   return job;
 }

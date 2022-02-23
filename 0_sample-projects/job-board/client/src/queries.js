@@ -53,6 +53,7 @@ export const MUTATION_CREATE_JOB = gql`
         id
         name
       }
+      description
     }
   }
 `;
