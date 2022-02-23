@@ -2,7 +2,7 @@
 
 Like queries,
 
-- subscriptions enable you to
+- subscriptions enable to
 - fetch data from a server
 
 Unlike queries,
@@ -25,9 +25,13 @@ In contrast, with a subscription
 Subscriptions can maintain
 
 - an active connection to your GraphQL server
-- (most commonly via WebSocket),
 - enabling the server to push updates
 - to the subscription's result
+
+They use not the http protocal
+
+- but WebSocket
+- to communication
 
 # When not to use
 
