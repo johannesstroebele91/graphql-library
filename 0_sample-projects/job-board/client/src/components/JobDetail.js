@@ -6,10 +6,7 @@ export const JobDetail = (props) => {
   const { jobId } = props.match.params;
   const [job, setJob] = useState(null);
 
-  //  load data from the server
   useEffect(() => {
-    // A async function needs to be created to call loadJob,
-    // because useEffect cannot be made async!!!
     const fetchJob = async () => {
       const fetchedJob = await loadJob(jobId);
       setJob(fetchedJob);

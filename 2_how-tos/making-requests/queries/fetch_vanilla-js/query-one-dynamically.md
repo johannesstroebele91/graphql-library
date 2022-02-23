@@ -45,6 +45,21 @@ module.exports = { Query, Job };
 
 ## 2.1. requests.js `job-board/client/src/requests.js`
 
+GraphQL enables to pass dynamic variables into the query
+
+- using the query keyword
+- the variable needs to be specified like e.g. "$id: ID!"
+
+Operational name can be stated after "query" for debugging only
+
+- Variables can be specified in the playground
+  - in the query variables section
+  - like e.g. "{"id": "SJRAZDu_z"}"
+    Better to make a flexible request
+- via e.g. "graphQLRequest",
+- if the content has only minor variations
+- PS optional variables need to be initialized with ""={}"")
+
 ```javascript
 export const QUERY_JOB = `query JobQuery($id: ID!) {
         job(id: $id) {

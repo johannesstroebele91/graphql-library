@@ -17,9 +17,9 @@ Normal request are done in the following way
 
 ## 2.1. Apollo Client
 
-2. Queries or mutations e.g. `job-board/client/src/queries.js`
-   - are created like specified in `make queries` and `make mutations`
-   - should be outsource if there are too many queries (e.g. `movies-management-system/client/src/queries/queries.js`)
+2. Queries or mutations are created like e.g. `job-board/client/src/queries.js`
+   - and should be outsource
+   - if there are too many queries (e.g. `movies-management-system/client/src/queries/queries.js`)
 3. React component:
    - a request can be triggerd using a hook from Apollo Client
    - e.g. useQuery, useMutation

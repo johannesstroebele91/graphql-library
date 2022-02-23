@@ -14,10 +14,6 @@ import {
 
 const endpointURL = "http://localhost:9000/graphql";
 
-// Parameters of ApolloLink
-// operation: GraphQL query or mutation
-// forward: function to chain multiple steps together
-// Important: "authLink"  property needs to be stated before "link"!)
 const authLink = new ApolloLink((operation, forward) => {
   if (isLoggedIn()) {
     operation.setContext({
@@ -31,41 +27,6 @@ const client = new ApolloClient({
   link: ApolloLink.from([authLink, new HttpLink({ uri: endpointURL })]),
   cache: new InMemoryCache({}),
 });
-
-// GraphQL enables to pass dynamic variables into the query
-// using the query keyword
-// the variable needs to be specified like e.g. "$id: ID!"
-
-// Operational name can be specified behind "query" for debugging only
-// Variables can be specified in the playground in the query variables section like e.g. "{"id": "SJRAZDu_z"}"
-// Better to make a flexible request via e.g. "graphQLRequest", if the content has only minor variations
-// (optional variables need to be initialized with ""={}"")
-/* JUST FOR REFERENCE
-async function graphqlRequest(query, variables = {}) {
-  const request = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query: query,
-      variables: variables,
-    }),
-  };
-  if (isLoggedIn()) {
-    request.headers["authorization"] = "Bearer " + getAccessToken();
-  }
-
-  const response = await fetch(endpointURL, request);
-  const responseBody = await response.json();
-
-  if (responseBody.errors) {
-    const message = responseBody.errors
-      .map((error) => error.message)
-      .join("\n");
-    throw new Error(message);
-  }
-
-  return responseBody.data;
-} */
 
 export async function loadJob(id) {
   const {

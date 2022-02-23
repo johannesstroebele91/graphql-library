@@ -5,10 +5,7 @@ import { JobList } from "./JobList";
 export function JobBoard() {
   const [jobs, setJobs] = useState([]);
 
-  //  load data from the server
   useEffect(() => {
-    // A async function needs to be created to call loadJobs,
-    // because useEffect cannot be made async!!!
     const fetchJobs = async () => {
       const fetchedJobs = await loadJobs();
       setJobs(fetchedJobs);

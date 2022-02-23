@@ -20,51 +20,18 @@ app.use(
   })
 );
 
-// 1) Define GraphQL schema (inteface of the API)
-// it describes what the API can do
-// so what a query might return
-// PS can contain multiple queries that can be made
-
-// gql = graphql schema definition language
-// "Query" if the name of the type here
-// So a client can call the server and ask for the data greeting
-
-// in typeDefs, a schema is defined
-// it is by default "schema {query: Query}"
-// so it can be skipped most of the times
 const typeDefs = gql(fs.readFileSync("./schema.graphql", { encoding: "utf8" }));
 
-// 2) Resolver
-// Implementation how the server returns a value
-// This function will be called by the GraphQL engine
-// everytime the client sends a "greeting" query
-// In other words it is called to "resolve" the value of the "greeting" field
 const resolvers = require("./resolvers");
 
-// 5) Content
-// enables to pass application data (e.g. user)
-// to be used in the resoler
 const context = ({ req }) => ({ user: req.user && db.users.get(req.user.sub) });
 
-// 3) Apollo Server
-// ApolloServer constructor takes configuration properties
-// such as the schema "typeDef" and the resolvers
-// Written in shorthand here, because property name match the variable names above
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   context,
 });
-// Login
-// Gets Email and the password from the request
-// Tries to find the user from the db
-// Check if the user with the password exists
-// And if so returns an access token
-// following the JSON web token standard
 
-// 4) Plug apollo server into the exisitng express application
-// Optionally a path can be added to specifiy
-// where the GraphQL server should be exposed (default is "/graphql")
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 
 app.post("/login", (req, res) => {

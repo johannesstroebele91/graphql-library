@@ -7,10 +7,7 @@ export const CompanyDetail = (props) => {
 
   const [company, setCompany] = useState(null);
 
-  //  load data from the server
   useEffect(() => {
-    // A async function needs to be created to call loadCompany,
-    // because useEffect cannot be made async!!!
     const fetchCompany = async () => {
       const fetchedCompany = await loadCompany(companyId);
       setCompany(fetchedCompany);
