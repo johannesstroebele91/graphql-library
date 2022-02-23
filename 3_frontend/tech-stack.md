@@ -23,23 +23,21 @@ Vanilla JS provide several solutions
 
 # 2. Apollo Client
 
-To make write queries easier,
+Apollo client
 
-- a GraphQL client
-- such as Apollo can be used
+- fetch, cache, and modify application data,
+- all while automatically updating your UI
+
+So it
+
+- it makes it easier to write queries and mutations (e.g. useQuery and useMutation) AND
+- enables caching (avoid making unecessary same requests and use data that was retrieved earlier)
 
 Apollo Client is a
 
 - comprehensive state management library for JavaScript
 - that enables you to manage both
 - local and remote data with GraphQL
-
-Use it to
-
-- fetch, cache, and modify application data,
-- all while automatically updating your UI
-- by providing the user with easy to use request hooks
-- e.g. useQuery and useMutation
 
 # 3. React
 
