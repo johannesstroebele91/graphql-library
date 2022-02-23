@@ -15,21 +15,20 @@
 11. Convert the query from a string into a structured object that can be understoof by Apollo Client using gql (e.g. `job-board/client/src/queries.js`)
 12. Authenticate requests using ApolloLink (e.g. `job-board/client/src/requests.js`)
 
-# Example setup apollo client for React `movies-management-system/client/src/App.js`:
+# Example setup apollo client without hooks `job-board/client/src/requests.js`:
 
 ```javascript
-const client = new ApolloClient({
-  uri: "http://localhost:5000/graphql",
-  cache: new InMemoryCache(),
-});
+const authLink = new ApolloLink((operation, forward) => {
+  if (isLoggedIn()) {
+    operation.setContext({
+      headers: { authorization: "Bearer " + getAccessToken() },
+    });
+  }
 
-function App() {
-  return (
-    <ApolloProvider client={client}>
-      <h1 style={{ textAlign: "center" }}>Movies Watch List</h1>
-      <MovieList />
-      <AddMovie />
-    </ApolloProvider>
-  );
-}
+  return forward(operation);
+});
+const client = new ApolloClient({
+  link: ApolloLink.from([authLink, new HttpLink({ uri: endpointURL })]),
+  cache: new InMemoryCache({}),
+});
 ```

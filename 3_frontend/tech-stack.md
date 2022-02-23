@@ -23,7 +23,7 @@ Vanilla JS provide several solutions
 
 # 2. Apollo Client
 
-Apollo client
+Apollo client enables tto
 
 - fetch, cache, and modify application data,
 - all while automatically updating your UI
@@ -31,8 +31,11 @@ Apollo client
 So it
 
 - it makes it easier to write queries and mutations (e.g. useQuery and useMutation) AND
-- enables caching (avoid making unecessary same requests and use data that was retrieved earlier)
-- PS the cache can be persiteted to local storage
+- enables caching
+  - which avoids making unecessary same requests and
+  - uses data that was retrieved earlier
+  - PS the cache is dependend on the "id" of the request
+  - PS the cache can be persiteted to local storage
 
 Apollo Client is a
 
