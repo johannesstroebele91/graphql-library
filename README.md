@@ -1,14 +1,15 @@
 # Relevance
 
-This project was created to learn GraphQL in combination with
+This project was created to learn
 
+- GraphQL in combination with
 - Express
-- Mongoose
-- MongoDB
-- React
-- Apollo
+- MongoDB (Mongoose)
+- React (functional components)
+- Apollo (client and server)
 
-# How to start the example project
+# Structure
 
-1. Start the client by going in to the client folder and following intructions in the README file `npm start`
-2. Start the server by going in to the server folder and following intructions in the README file `node app.js`
+1. Example projects: show how to the knowledge can be applied
+2. Background: provides the fundamental knowledge to understand GraphQL and related technologies
+3. How-Tos: explains how to setup and run a project using GraphQL
