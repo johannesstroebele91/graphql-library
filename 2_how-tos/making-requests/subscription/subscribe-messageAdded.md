@@ -23,7 +23,22 @@ input MessageInput {
 }
 ```
 
-## 1.2. Resolvers
+## 1.2. Enable WebSockets for Apollo Server
+
+Explicitly create a http server instance
+
+- instead by letting it be created implicitly by express app
+- which enables to tell the apollo server
+- to install subscription handler on the http server
+
+```javascript
+const httpServer = http.createServer(app);
+apolloServer.installSubscriptionHandlers(httpServer);
+
+httpServer.listen(port, () => console.log(`Server started on port ${port}`));
+```
+
+## 1.3. Resolvers
 
 ```javascript
 
@@ -34,6 +49,13 @@ input MessageInput {
 ## 2.1. requests.js
 
 ```javascript
+subscription {
+  messageAdded {
+    id
+    from
+    text
+  }
+}
 
 ```
 

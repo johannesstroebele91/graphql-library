@@ -1,4 +1,9 @@
-# Basics
+- [1. Basics](#1-basics)
+- [2. How it works via WebSockets](#2-how-it-works-via-websockets)
+  - [3.1. When not to use](#31-when-not-to-use)
+  - [3.2. When to use](#32-when-to-use)
+
+# 1. Basics
 
 Like queries,
 
@@ -20,7 +25,7 @@ In contrast, with a subscription
 - you send one request but
 - might receive multiple responses
 
-# How it works
+# 2. How it works via WebSockets
 
 Subscriptions can maintain
 
@@ -28,12 +33,23 @@ Subscriptions can maintain
 - enabling the server to push updates
 - to the subscription's result
 
-They use not the http protocal
+Clients need to communicate with the server
 
+- NOT via the http protocal
 - but WebSocket
-- to communication
 
-# When not to use
+WebSockts make it possible to
+
+- open a two-way interactive communication session
+- bweteeen the client and the server
+
+This API enables to
+
+- send messages to a server
+- and receive and event-driven response
+- (so not a periodic polling required)
+
+## 3.1. When not to use
 
 Subscriptions can be used for
 
@@ -49,18 +65,14 @@ HOWEVER, th following methods should be used
   - periodic polling with queries,
   - re-execute queries on demand (e.g. button click)
 
-# When to use
+## 3.2. When to use
 
-## Small, incremental changes to large objects
-
-Repeatedly polling
+Repeatedly polling for
 
 - small, incremental changes to large objects is expensive
 - when most of its fields rarely change
 - Instead fetch the object's initial state with a query AND
 - AN the server can proactively push updates to individual fields
-
-## Low-latency, real-time updates
 
 Low-latency, real-time updates,
 

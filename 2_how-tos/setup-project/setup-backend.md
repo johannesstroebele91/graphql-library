@@ -11,7 +11,8 @@
 9. Handle login
 10. Create a MongoDB
 11. Connect MongoDB and GraphQL
-12. Listen for connections
+12. Setup apollo server fors subscriptions
+13. Listen for connections
 
 **Further explanations for the steps are provided below**
 
@@ -22,7 +23,8 @@
 - [9. Login](#9-login)
 - [10. Create a MongoDB](#10-create-a-mongodb)
 - [11. Connect MongoDB and GraphQL](#11-connect-mongodb-and-graphql)
-- [12. Listen for connections](#12-listen-for-connections)
+- [12. Setup apollo server for subscription](#12-setup-apollo-server-for-subscription)
+- [13. Listen for connections](#13-listen-for-connections)
 
 # 4. Create an express app
 
@@ -181,7 +183,15 @@ Two possibilities:
 3. Establish connection as shown in **app.js file**
 4. Create a mongoose model and schema for the data types inside mongoDB
 
-# 12. Listen for connections
+# 12. Setup apollo server for subscription
+
+Explicitly create a http server instance
+
+- instead by letting it be created implicitly by express app
+- which enables to tell the apollo server
+- to install subscription handler on the http server
+
+# 13. Listen for connections
 
 Enables to start the server and
 
