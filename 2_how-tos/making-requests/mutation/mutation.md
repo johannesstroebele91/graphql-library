@@ -1,34 +1,63 @@
-# Basics
+# 1. Basics
 
 Enable to modify server-side data
 
 - and by default return nothing if not specified
 - however it is recommended to return the created data
 
-# Example
+# 2. Backend
 
-## 1. Backend
+## 2.1. Schema `job-board/server/schema.graphql`:
 
-### 1.1. Schema `job-board/server/schema.graphql`:
+For mutations,
+
+- most often parameters are passed
+- and a return type specified
+
+Input parameters can
+
+- be combined into one input parameter
+- which input type
+- is not to be confused with an output type
+
+Their purpose is as follows:
+
+- output type: how the data that the endpoint returns should look like
+- input type: how the input parmeters should look like
 
 ```graphql
 type Mutation {
-  createJob(companyId: ID, title: String, description: String): Job
+  createJob(input: CreateJobInput): Job
 }
 
+# OUPUT or return type
 type Job {
   id: ID!
   title: String
   company: Company
   description: String
 }
+
+# OUPUT or return types
+type Company {
+  id: ID!
+  name: String
+  description: String
+  jobs: [Job]
+}
+
+# INPUT or parameter type
+input CreateJobInput {
+  title: String
+  description: String
+}
 ```
 
-### 1.2. Resolver
+## 2.2. Resolver
 
 Parameters
 a) parent object (root)
-b) object based on the GraphQL arguments defined in the schema
+b) input object based on the GraphQL arguments defined in the schema
 
 ```javascript
 const Mutation = {
@@ -39,9 +68,36 @@ const Mutation = {
 };
 ```
 
-## 2. Frontend
+# 3. Frontend
 
-### 2.1. requests.js `job-board/client/src/requests.js`
+## 3.1. requests.js `job-board/client/src/requests.js`
+
+For the parameters
+
+- the types need to be declared first
+- and afterwards the passed values
+- assigned to the variables in the query
+
+```javascript
+export const MUTATION_CREATE_JOB = `mutation CreateJob(
+  $companyId: ID
+  $title: String
+  $description: String
+  ){
+    job: createJob(
+      companyId: $companyId
+      title: $title
+      description: $description
+    ) {
+     title
+  }
+}`;
+```
+
+It's important to
+
+- initialize input paramters "variables"
+- using `variables = {}`
 
 ```javascript
 async function graphqlRequest(query, variables = {}) {
@@ -56,27 +112,13 @@ async function graphqlRequest(query, variables = {}) {
   return response.json().data;
 }
 
-export const MUTATION_CREATE_JOB = `mutation CreateJob(
-  $companyId: ID
-  $title: String
-  $description: String
-  ){
-    job: createJob(
-      companyId: $companyId
-      title: $title
-      description: $description
-    ) {
-     title
-  }
-}`;
-
 export async function createJob(input) {
   const { job } = await graphqlRequest(MUTATION_CREATE_JOB, { input });
   return job;
 }
 ```
 
-### 2.2. React component `job-board/client/src/components/JobForm.js`
+## 3.2. React component `job-board/client/src/components/JobForm.js`
 
 ```javascript
 export const JobForm = () => {
@@ -143,7 +185,7 @@ export const JobForm = () => {
 };
 ```
 
-# 3. Response
+# 4. Response
 
 ```json
 {

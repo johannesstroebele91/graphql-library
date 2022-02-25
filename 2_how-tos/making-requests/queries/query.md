@@ -1,13 +1,12 @@
 - [1. Basics](#1-basics)
 - [2. When to use them](#2-when-to-use-them)
-- [3. How to make a query](#3-how-to-make-a-query)
-  - [3.2. Backend](#32-backend)
-    - [3.2.1. Schema `job-board/server/schema.graphql`](#321-schema-job-boardserverschemagraphql)
-    - [3.2.2. Resolvers `job-board/server/resolvers.js`](#322-resolvers-job-boardserverresolversjs)
-  - [3.2. Frontend](#32-frontend)
-    - [3.2.1. requests.js `job-board/client/src/requests.js`](#321-requestsjs-job-boardclientsrcrequestsjs)
-    - [3.2.2. React component `job-board/client/src/components/JobBoard.js`](#322-react-component-job-boardclientsrccomponentsjobboardjs)
-- [4. Response](#4-response)
+- [3. Backend](#3-backend)
+  - [3.2. Schema `job-board/server/schema.graphql`](#32-schema-job-boardserverschemagraphql)
+  - [3.3. Resolvers `job-board/server/resolvers.js`](#33-resolvers-job-boardserverresolversjs)
+- [4. Frontend](#4-frontend)
+  - [4.1. requests.js `job-board/client/src/requests.js`](#41-requestsjs-job-boardclientsrcrequestsjs)
+  - [4.2. React component `job-board/client/src/components/JobBoard.js`](#42-react-component-job-boardclientsrccomponentsjobboardjs)
+- [5. Response](#5-response)
 
 # 1. Basics
 
@@ -19,16 +18,14 @@ Queries enable to
 
 # 2. When to use them
 
-In certain edge cases,
+Most of them time queries should be use
 
-- it is better to use subscriptions
-- which is explained in "When to use" in `subscription/basics.md`
+- BUT in certain edge cases subscriptions are better
+- as explained in "When to use" in `subscription/basics.md`
 
-# 3. How to make a query
+# 3. Backend
 
-## 3.2. Backend
-
-### 3.2.1. Schema `job-board/server/schema.graphql`
+## 3.2. Schema `job-board/server/schema.graphql`
 
 Defines how endpoint for query will look like
 
@@ -52,7 +49,7 @@ type Company {
 }
 ```
 
-### 3.2.2. Resolvers `job-board/server/resolvers.js`
+## 3.3. Resolvers `job-board/server/resolvers.js`
 
 The query object
 
@@ -83,9 +80,9 @@ const Company = {
 };
 ```
 
-## 3.2. Frontend
+# 4. Frontend
 
-### 3.2.1. requests.js `job-board/client/src/requests.js`
+## 4.1. requests.js `job-board/client/src/requests.js`
 
 ```javascript
 const endpointURL = "http://localhost:9000/graphql";
@@ -115,7 +112,7 @@ export async function loadJobs() {
 }
 ```
 
-### 3.2.2. React component `job-board/client/src/components/JobBoard.js`
+## 4.2. React component `job-board/client/src/components/JobBoard.js`
 
 ```javascript
 export function JobBoard() {
@@ -145,7 +142,7 @@ export function JobBoard() {
 }
 ```
 
-# 4. Response
+# 5. Response
 
 ```JSON
 {
