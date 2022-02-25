@@ -1,4 +1,15 @@
-# Basics
+- [1. Basics](#1-basics)
+- [2. When to use them](#2-when-to-use-them)
+- [3. How to make a query](#3-how-to-make-a-query)
+  - [3.2. Backend](#32-backend)
+    - [3.2.1. Schema `job-board/server/schema.graphql`](#321-schema-job-boardserverschemagraphql)
+    - [3.2.2. Resolvers `job-board/server/resolvers.js`](#322-resolvers-job-boardserverresolversjs)
+  - [3.2. Frontend](#32-frontend)
+    - [3.2.1. requests.js `job-board/client/src/requests.js`](#321-requestsjs-job-boardclientsrcrequestsjs)
+    - [3.2.2. React component `job-board/client/src/components/JobBoard.js`](#322-react-component-job-boardclientsrccomponentsjobboardjs)
+- [4. Response](#4-response)
+
+# 1. Basics
 
 Queries enable to
 
@@ -6,25 +17,20 @@ Queries enable to
 - you send one request and
 - you receive one response back
 
-# When to use them
+# 2. When to use them
 
 In certain edge cases,
 
 - it is better to use subscriptions
 - which is explained in "When to use" in `subscription/basics.md`
 
-# How to make a query
+# 3. How to make a query
 
-## 1. Backend
+## 3.2. Backend
 
-### 1.1. Schema `job-board/server/schema.graphql`
+### 3.2.1. Schema `job-board/server/schema.graphql`
 
 Defines how endpoint for query will look like
-
-The arguments passed in the job GraphQL query to
-
-- can contain the root and args arguments
-- which can be destructuring like "{id}"
 
 ```graphql
 type Query {
@@ -38,20 +44,30 @@ type Job {
   company: Company
   description: String
 }
+
+type Company {
+  id: ID!
+  name: String
+  description: String
+}
 ```
 
-### 1.2. Resolvers `job-board/server/resolvers.js`
+### 3.2.2. Resolvers `job-board/server/resolvers.js`
 
-Gets the data (e.g. from the MongoDB
+The query object
 
-- and processes the data
+- includes the handler
+- for all possible queries
+
+It handels
+
+- how the data is processed (e.g. from the MongoDB)
 - as specified in the schema
 
-Here, jobs should be queried
+Missing nested objects
 
-- which is why it needs to be specified
-- how the jobs should be retrived from the database
-- and Job??? TODO Daniel
+- can be populated
+- via resolver objects (e.g. Job)
 
 ```javascript
 const db = require("./db");
@@ -60,26 +76,16 @@ const Query = {
   job: (root, { id }) => db.jobs.get(id),
   jobs: () => db.jobs.list(),
 };
-```
 
-Relations can be defined as follows:
-
-- The parent object for each company is the Job
-- which can be used to get the right company based on the id
-- Then the company for each job can be returned
-
-```javascript
-// TODO necessary???
-const Job = {
-  company: (job) => db.companies.get(job.companyId),
+const Company = {
+  jobs: (company) =>
+    db.jobs.list().filter((job) => job.companyId === company.id),
 };
-
-module.exports = { Query, Job };
 ```
 
-## 2. Frontend
+## 3.2. Frontend
 
-### 2.1. requests.js `job-board/client/src/requests.js`
+### 3.2.1. requests.js `job-board/client/src/requests.js`
 
 ```javascript
 const endpointURL = "http://localhost:9000/graphql";
@@ -109,7 +115,7 @@ export async function loadJobs() {
 }
 ```
 
-### 2.2. React component `job-board/client/src/components/JobBoard.js`
+### 3.2.2. React component `job-board/client/src/components/JobBoard.js`
 
 ```javascript
 export function JobBoard() {
@@ -139,7 +145,7 @@ export function JobBoard() {
 }
 ```
 
-# Response
+# 4. Response
 
 ```JSON
 {
