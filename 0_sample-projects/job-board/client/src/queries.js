@@ -14,7 +14,7 @@ const jobDetailFragement = gql`
 
 export const QUERY_JOBS = gql`
   {
-    jobs {
+    getJobs {
       id
       title
       company {
@@ -29,7 +29,7 @@ export const QUERY_JOBS = gql`
 
 export const QUERY_JOB = gql`
   query JobQuery($id: ID!) {
-    job(id: $id) {
+    getJob(id: $id) {
       ...JobDetail
     }
   }
@@ -38,7 +38,7 @@ export const QUERY_JOB = gql`
 
 export const QUERY_COMPANY = gql`
   query CompanyQuery($id: ID!) {
-    company(id: $id) {
+    getCompany(id: $id) {
       id
       name
       description

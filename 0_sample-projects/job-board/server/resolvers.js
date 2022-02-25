@@ -1,17 +1,18 @@
 const db = require("./db");
 
 const Query = {
-  jobs: () => db.jobs.list(),
-
-  job: (root, { id }) => db.jobs.get(id),
-
-  company: (root, { id }) => db.companies.get(id),
+  getJobs: () => db.jobs.list(),
+  getJob: (root, { id }) => db.jobs.get(id),
+  getCompany: (root, { id }) => db.companies.get(id),
 };
 
+// Handle missing nested fields and objects
+// 1) Poluates company field for Job type based on the specified GraphQL schema
 const Job = {
   company: (job) => db.companies.get(job.companyId),
 };
 
+// 2) Poluates jobs field for Company type based on the specified GraphQL schema
 const Company = {
   jobs: (company) =>
     db.jobs.list().filter((job) => job.companyId === company.id),
@@ -28,4 +29,9 @@ const Mutation = {
   },
 };
 
-module.exports = { Query, Mutation, Job, Company };
+module.exports = {
+  Query,
+  Mutation,
+  Job,
+  Company,
+};

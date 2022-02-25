@@ -1,8 +1,8 @@
 # Array of jobs
 type Query {
-  job(id: ID!): Job
-  jobs: [Job]
-  company(id: ID!): Company
+  getJob(id: ID!): Job
+  getJobs: [Job]
+  getCompany(id: ID!): Company
 }
 
 type Mutation {
@@ -10,18 +10,18 @@ type Mutation {
 }
 
 # OUPUT or return types
-type Company {
-  id: ID!
-  name: String
-  description: String
-  jobs: [Job]
-}
-
 type Job {
   id: ID!
   title: String
   company: Company
   description: String
+}
+
+type Company {
+  id: ID!
+  name: String
+  description: String
+  jobs: [Job]
 }
 
 # INPUT or parameter types
