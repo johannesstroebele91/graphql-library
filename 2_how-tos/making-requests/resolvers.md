@@ -1,5 +1,5 @@
 - [1. Basics](#1-basics)
-- [2. Schema](#2-schema)
+- [2. A resolver needs to be based on the schema](#2-a-resolver-needs-to-be-based-on-the-schema)
 - [3. Resolvers](#3-resolvers)
 - [3.1. Write possible operations](#31-write-possible-operations)
 - [3.2. Populate missing nested fields and objects](#32-populate-missing-nested-fields-and-objects)
@@ -18,11 +18,22 @@ Apollo Server needs to know
 A resolver is a function
 
 - that's responsible for populating the data
-- for a single field in your schema
+- for each field in your schema
 
-It can populate that data in any way you define, such as by fetching data from a back-end database or a third-party API.
+It can populate that data
 
-# 2. Schema
+- in any way you define,
+- such as by fetching data from a back-end database or
+- a third-party API
+
+It is impotant that
+
+- the returend resolvers object
+- must always mirror
+- the type definitions and associations
+- that were specified in the schema
+
+# 2. A resolver needs to be based on the schema
 
 In the schema the Job typ
 
