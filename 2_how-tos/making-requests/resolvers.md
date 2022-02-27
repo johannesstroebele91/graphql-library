@@ -124,7 +124,20 @@ If not considered,
 - nested objects would provide the value "null"
 - if not correctly handled by the resolver
 
-Thefore, a resolver objects need to be created to
+Two possible methods exist to solve this:
+a) Populate the nested field or object directly in the e.g. query
+b) Create a resolver object which populates the nested field or object afterwards
+
+a) Solution
+
+Extend the logic `getJobs: () => db.jobs.list()`
+
+- to not only load the jobs
+- but get for each job via mapping the right company
+
+b) Solution
+
+Therefore, a resolver objects need to be created to
 
 - that reflect the GraphQL schema
 - to resolve the missing nested field or object
