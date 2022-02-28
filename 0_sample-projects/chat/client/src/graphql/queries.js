@@ -1,5 +1,4 @@
 import { gql } from "apollo-boost";
-import client from "./client";
 
 export const messagesQuery = gql`
   query MessagesQuery {
@@ -31,6 +30,7 @@ export const messageAddedSubscription = gql`
   }
 `;
 
+/* All these functions are no longer used due to apollo hooks and are just here as a reference
 export async function getMessages() {
   const { data } = await client.query({ query: messagesQuery });
   return data.messages;
@@ -48,3 +48,4 @@ export async function onMessageAdded(handleMessage) {
   const observable = client.subscribe({ query: messageAddedSubscription });
   return observable.subscribe(({ data }) => handleMessage(data.messageAdded));
 }
+*/
