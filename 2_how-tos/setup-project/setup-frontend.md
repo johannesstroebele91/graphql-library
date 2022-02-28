@@ -12,22 +12,20 @@
 10. Optionally use Apollo cache `job-board/client/src/requests.js`
 11. Use fragments for reusing query and mutation code
 
+Setup with React hooks
+
+12. Use React Apollo to make it easier to use Apollo Client with React
+13. Setup Apollo Provider to use React Apollo
+14. Ensure that only it is an functional component
+
 **Further explanations for the steps are provided below**
 
 - [5. Apollo Client (Cache)](#5-apollo-client-cache)
 - [7. Request `job-board/client/src/requests.js`](#7-request-job-boardclientsrcrequestsjs)
 - [8. React component `job-board/client/src/components/JobBoard.js`](#8-react-component-job-boardclientsrccomponentsjobboardjs)
-- [Use React Apollo to make it easier to use Apollo Client with React](#use-react-apollo-to-make-it-easier-to-use-apollo-client-with-react)
-- [Setup Apollo Provider to use React Apollo](#setup-apollo-provider-to-use-react-apollo)
-- [Ensure that only it is an functional componnt](#ensure-that-only-it-is-an-functional-componnt)
-- [Query: Get data from the server](#query-get-data-from-the-server)
-- [Mutation: Change data on the serve](#mutation-change-data-on-the-serve)
-- [Subscription: Get array of data from the server based on events](#subscription-get-array-of-data-from-the-server-based-on-events)
-  - [1. For simply displaying the lastest data](#1-for-simply-displaying-the-lastest-data)
-  - [2. For working with all data](#2-for-working-with-all-data)
-    - [2.1. Local state management](#21-local-state-management)
-    - [2.2. onCompleted paramter](#22-oncompleted-paramter)
-- [Outsourcing logic via custom hooks](#outsourcing-logic-via-custom-hooks)
+- [12. Use React Apollo to make it easier to use Apollo Client with React](#12-use-react-apollo-to-make-it-easier-to-use-apollo-client-with-react)
+- [13. Setup Apollo Provider to use React Apollo](#13-setup-apollo-provider-to-use-react-apollo)
+- [14. Ensure that only it is an functional componnt](#14-ensure-that-only-it-is-an-functional-componnt)
 
 # 5. Apollo Client (Cache)
 
@@ -119,7 +117,7 @@ export function JobBoard() {
 }
 ```
 
-# Use React Apollo to make it easier to use Apollo Client with React
+# 12. Use React Apollo to make it easier to use Apollo Client with React
 
 _Ref: https://www.apollographql.com/docs/react/#community-integrations_
 
@@ -147,7 +145,7 @@ The packages are:
   - call the query and
   - pass it into the component
 
-# Setup Apollo Provider to use React Apollo
+# 13. Setup Apollo Provider to use React Apollo
 
 The Apollo Provider
 
@@ -193,7 +191,7 @@ class App extends Component {
 }
 ```
 
-# Ensure that only it is an functional componnt
+# 14. Ensure that only it is an functional componnt
 
 First all class based components
 
@@ -209,322 +207,6 @@ export default function Chat({ user }) {
   async function handleSend(text) {
     const message = { id: text, from: "you", text };
     setMessages(messages.concat(message));
-  }
-
-  return (
-    <section className="section">
-      <div className="container">
-        <h1 className="title">Chatting as {user}</h1>
-        <MessageList user={user} messages={messages} />
-        <MessageInput onSend={handleSend} />
-      </div>
-    </section>
-  );
-}
-```
-
-# Query: Get data from the server
-
-Queries can be made by
-
-- using the useQuery hook
-- which receives a GraphQL query, and
-- additional parameters e.g. variables, fetchPolicy, onCompleted...
-- and returns an object that can be destructured to get
-  - `loading`
-  - `error`
-  - `data`
-
-It is important that with useSubscription
-
-- the returned data property
-- can be handled more efficiently by
-- using the `onCompleted` parameter
-- as shown in the subscription example below
-
-Example: `chat/client/src/Chat.js`
-
-```javascript
-export default function Chat({ user }) {
-  const { loading, error, data } = useQuery(messagesQuery, {
-    variables: { id: someId },
-    fetchPolicy,
-  });
-  // create messges object if data is defiend or initialize empty
-  const messages = data ? data.messages : [];
-
-  if (loading) return <p>Data is loading... </p>;
-  if (error) return <p>Error!</p>;
-
-  return (
-    <section className="section">
-      <div className="container">
-        <h1 className="title">Chatting as {user}</h1>
-        <MessageList user={user} messages={messages} />
-      </div>
-    </section>
-  );
-}
-```
-
-# Mutation: Change data on the serve
-
-Mutations can be made by
-
-- using the useMutation() hook
-- which receives a GraphQL query, and
-- additional parameters e.g. variables, fetchPolicy, ...
-- and returns
-  1. an `array of objects` with a function that let's you trigger if called
-  2. an result object with properties like loading,
-
-This mutation function
-
-- can then be called, and
-- the necessary data passed
-- via variables object of the parameters
-- It is important that
-  - the function does not need to return anything
-  - but only needs to be called
-  - to change the data
-
-The returned data of the mutatation
-
-- can be handled in multiple ways
-
-1. Giving back the complete results object
-   - and handling everything case by case
-2. Destructuring the result object (e.g. loading, error, data, and called)
-
-- `loading`: show sth to the user as long a mutation is processing
-- `error`: show user an error message if the mutation failed
-- `data`: data that was mutated, which can be undefined
-- `called`:
-  - tells if the mutation has been called or not,
-  - which is convenient to trigger like redirecting to another screen
-
-Example: `chat/client/src/Chat.js`
-
-```javascript
-export default function Chat({ user }) {
-  const [addMessage, { loading, error, data, called }] =
-    useMutation(addMessageMutation);
-
-  async function handleSend(text) {
-    await addMessage({ variables: { input: text } });
-  }
-
-  return (
-    <section className="section">
-      <div className="container">
-        <h1 className="title">Chatting as {user}</h1>
-        <MessageList user={user} messages={messages} />
-        <MessageInput onSend={handleSend} />
-      </div>
-    </section>
-  );
-}
-```
-
-# Subscription: Get array of data from the server based on events
-
-Subscriptions can be made by
-
-- using the useSubscription() hook
-- which receives a GraphQL query, AND
-- additional parameters e.g. onSubscriptionData, variables, fetchPolicy,
-
-Important, the useSubscription() hook
-
-- needs to be placed AFTER the useQuery() hook
-- because you only want to subscribe to messages
-- that were added after the ones that were gotten from the query
-
-The returned data of the subscription can be handled in multiple ways like with mutations:
-
-## 1. For simply displaying the lastest data
-
-- the result object can be used like with useQuery()
-- so by destructuring the `loading`, `error`, `data` property
-- WARNING!!! the data object
-  - only displays the latest data
-  - received from the subscription
-  - e.g. `const messages = data ? [data.messageAdded] . [];`
-
-## 2. For working with all data
-
-The onSubscriptionData parameter can be used
-
-- to append the new created value
-- to the existing array of messages
-- and can use again two different methods
-- to make it work:
-
-### 2.1. Local state management
-
-Apollo client makes it easier
-
-- compared to the `onCompleted paramter` method below,
-- to use useQuery for initially loading data
-
-Apollo client has a cache which enables
-
-- NOT ONLY to stores the results of queries
-  - instead of re-requesting data
-  - over and over againand
-- BUT ALSO all the data of different react components
-  - so writing every kind of data into the cach
-
-This can be done by
-
-1. using the desctured `data` from useQuery like before, and
-2. replacing the existing object
-   - with a new updated one in the apollo cache by
-   - using second parameter `client` of the `onSubscriptionData` property
-   - which can then be used via `cache.writeData()`
-   - to replace the message object with a new one
-   - that includes the addtional message
-   - which leads to a rerender
-   - and the useQuery returning the updated messages object via data
-
-It is important to understand that
-
-- using this method useQuery can now responds
-- to each local udpate of the cache
-- BUT is triggered by a rerender of the application
-
-Another advantage is
-
-- that this updated data
-- can be also used in another component
-- because it is now available accross components
-- via this approach
-- and each component will receive the updates automatically
-
-Example: `chat/client/src/Chat.js`
-
-```javascript
-export default function Chat({ user }) {
-  const { data, loading, error } = useQuery(messagesQuery);
-  const messages = data ? data.messages : [];
-
-  useSubscription(messageAddedSubscription, {
-    onSubscriptionData: ({ client, subscriptionData }) => {
-      client.writeData({
-        data: {
-          messages: messages.concat(subscriptionData.data.messageAdded),
-        },
-      });
-    },
-  });
-  ...
-  return (
-    <section className="section">
-      <div className="container">
-        <h1 className="title">Chatting as {user}</h1>
-        <MessageList user={user} messages={messages} />
-        <MessageInput onSend={handleSend} />
-      </div>
-    </section>
-  );
-}
-```
-
-### 2.2. onCompleted paramter
-
-Another way is to use
-
-- the onCompleted parameter of the useQuery hook
-- which is a more naive "inefficient" way
-
-Example: `chat/client/src/Chat.js`
-
-```javascript
-export default function Chat({ user }) {
-  const [messages, setMessages] = useState([]);
-
-  useQuery(messagesQuery, {
-    onCompleted: (data) => setMessages(data.messages),
-  });
-
-  useSubscription(messageAddedSubscription, {
-    onSubscriptionData: ({ subscriptionData }) => {
-      setMessages(messages.concat(subscriptionData.data.messageAdded));
-    },
-  });
-
-  return (
-    <section className="section">
-      <div className="container">
-        <h1 className="title">Chatting as {user}</h1>
-        <MessageList user={user} messages={messages} />
-        <MessageInput onSend={handleSend} />
-      </div>
-    </section>
-  );
-}
-```
-
-# Outsourcing logic via custom hooks
-
-Custom hooks is
-
-- a function that starts with `use`
-- e.g. useChatMessages()
-
-Such hooks enable to
-
-- easily outsourcing code that should not be in a component
-  - such as fetching data
-  - because components should only displaying data
-- and reuse the logic for multiple components
-
-A great addtional advantage to the component is
-
-- that the complicated logic for function calls
-  - e.g. `addMessage({ variables: { input: { text } } })`
-  - can also be outsourced to the hook
-    - component: e.g. `addMessage(text)`
-    - custom hook: e.g. `addMessage: (text) => addMessage({ variables: { input: { text } } })`
-
-Example: `chat/client/src/hooks.js`
-
-```javascript
-export default function useChatMessages() {
-  const { data } = useQuery(messagesQuery);
-  const messages = data ? data.messages : [];
-
-  useSubscription(messageAddedSubscription, {
-    onSubscriptionData: ({ client, subscriptionData }) => {
-      client.writeData({
-        data: {
-          messages: messages.concat(subscriptionData.data.messageAdded),
-        },
-      });
-    },
-  });
-  const [addMessage] = useMutation(addMessageMutation);
-  return {
-    messages,
-    addMessage: (text) => addMessage({ variables: { input: { text } } }),
-  };
-}
-```
-
-Example: `chat/client/src/Chat.js`
-
-```javascript
-import useChatMessages from "./hooks";
-
-function useChatMessages() {
-  const { data } = useQuery(messagesQuery);
-  const messages = data ? data.messages : [];
-
-export default function Chat({ user }) {
-  const { messages, addMessage } = useChatMessages();
-
-  async function handleSend(text) {
-    await addMessage(text);
   }
 
   return (

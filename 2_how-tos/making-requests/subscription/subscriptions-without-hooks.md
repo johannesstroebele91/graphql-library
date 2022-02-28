@@ -1,47 +1,19 @@
-- [1. How it works via WebSockets](#1-how-it-works-via-websockets)
-- [2. Backend](#2-backend)
-  - [2.1. Schema](#21-schema)
-  - [2.2. Enable WebSockets for Apollo Server](#22-enable-websockets-for-apollo-server)
-  - [2.3. Resolvers](#23-resolvers)
-  - [2.4. Testing with GraphQL playground](#24-testing-with-graphql-playground)
-- [3. Frontend](#3-frontend)
-  - [3.1. Install necessary packages](#31-install-necessary-packages)
+- [1. Backend](#1-backend)
+  - [1.1. Schema](#11-schema)
+  - [1.2. Enable WebSockets for Apollo Server](#12-enable-websockets-for-apollo-server)
+  - [1.3. Resolvers](#13-resolvers)
+  - [1.4. Testing with GraphQL playground](#14-testing-with-graphql-playground)
+- [2. Frontend](#2-frontend)
+  - [2.1. Install necessary packages](#21-install-necessary-packages)
   - [Enhance Apollo Client to work with WebSockets](#enhance-apollo-client-to-work-with-websockets)
-  - [3.1. Write query for subscription](#31-write-query-for-subscription)
-  - [3.2. Add call of subscription in React component](#32-add-call-of-subscription-in-react-component)
-  - [3.3. Write request that uses query](#33-write-request-that-uses-query)
-  - [3.4. Handle that the subscription is also stopped at some point](#34-handle-that-the-subscription-is-also-stopped-at-some-point)
-- [4. Understanding via Developer Tools](#4-understanding-via-developer-tools)
-- [4.1. sockjs-node:](#41-sockjs-node)
-- [4.2. graphl:](#42-graphl)
+  - [2.1. Write query for subscription](#21-write-query-for-subscription)
+  - [2.2. Add call of subscription in React component](#22-add-call-of-subscription-in-react-component)
+  - [2.3. Write request that uses query](#23-write-request-that-uses-query)
+  - [2.4. Handle that the subscription is also stopped at some point](#24-handle-that-the-subscription-is-also-stopped-at-some-point)
 
-# 1. How it works via WebSockets
+# 1. Backend
 
-Subscriptions can maintain
-
-- an active connection to your GraphQL server
-- enabling the server to push updates
-- to the subscription's result
-
-Clients need to communicate with the server
-
-- NOT via the http protocal
-- but WebSocket
-
-WebSockts make it possible to
-
-- open a two-way interactive communication session
-- bweteeen the client and the server
-
-This API enables to
-
-- send messages to a server
-- and receive and event-driven response
-- (so not a periodic polling required)
-
-# 2. Backend
-
-## 2.1. Schema
+## 1.1. Schema
 
 A subscribtion is added by
 
@@ -60,7 +32,7 @@ type Message {
 }
 ```
 
-## 2.2. Enable WebSockets for Apollo Server
+## 1.2. Enable WebSockets for Apollo Server
 
 Explicitly create a http server instance
 
@@ -77,7 +49,7 @@ apolloServer.installSubscriptionHandlers(httpServer);
 httpServer.listen(port, () => console.log(`Server started on port ${port}`));
 ```
 
-## 2.3. Resolvers
+## 1.3. Resolvers
 
 Instead of just one value returned for queries, a subscription
 
@@ -130,7 +102,7 @@ const Mutation = {
 };
 ```
 
-## 2.4. Testing with GraphQL playground
+## 1.4. Testing with GraphQL playground
 
 ```graphql
 subscription {
@@ -167,9 +139,9 @@ This shows that multiple responses can be send via subscription
 }
 ```
 
-# 3. Frontend
+# 2. Frontend
 
-## 3.1. Install necessary packages
+## 2.1. Install necessary packages
 
 - `npm install apollo-link-ws`
 - `npm install subscription-transport-ws`
@@ -235,7 +207,7 @@ const client = new ApolloClient({
 });
 ```
 
-## 3.1. Write query for subscription
+## 2.1. Write query for subscription
 
 Example: `chat/client/src/graphql/queries.js`
 
@@ -251,7 +223,7 @@ const messageAddSubscription = gql`
 `;
 ```
 
-## 3.2. Add call of subscription in React component
+## 2.2. Add call of subscription in React component
 
 First think about
 
@@ -281,7 +253,7 @@ class Chat extends Component {
 }
 ```
 
-## 3.3. Write request that uses query
+## 2.3. Write request that uses query
 
 Based on how the subscription
 
@@ -310,7 +282,7 @@ export async function onMessageAdded(handleMessage) {
 }
 ```
 
-## 3.4. Handle that the subscription is also stopped at some point
+## 2.4. Handle that the subscription is also stopped at some point
 
 Frist return the observable instead of just executing it
 
@@ -353,46 +325,3 @@ class Chat extends Component {
   ...
 }
 ```
-
-# 4. Understanding via Developer Tools
-
-Open developer tools and go to
-
-- Network
-- WS
-
-Mostly there are two connections:
-
-# 4.1. sockjs-node:
-
-sockjs-node is a connection to port 3000
-
-- on localhost:3000 runs web development server
-- the dev server uses
-- WebSockets to automatically reload web page
-- if there were changes
-
-# 4.2. graphl:
-
-graphl is a connection to port 9000
-
-- on localhost:9000 runs the backend server
-- the subscrition works as follows:
-
-A subscription starts
-
-- with an HTTP get request
-- and the server responds with an 101 swiching protocols
-- so although WebSockets are a different protocol than HTTP
-- the browser initiates the ws connectin with an HTTP request
-- via the connection upgrade websocket header
-
-If a connection is established
-
-- all the messages can be seen
-- in the messages tab
-
-More details can be seen
-
-- in the section `Inspecting the WebSocket Protocol`
-- from the GraphQL by example Udemy course

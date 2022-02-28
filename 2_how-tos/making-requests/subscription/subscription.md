@@ -52,3 +52,27 @@ Low-latency, real-time updates,
 - such as chat application's client
 - where the user wants to receive new messages
 - as soon as they're available
+
+# 3. How it works via WebSockets
+
+Subscriptions can maintain
+
+- an active connection to your GraphQL server
+- enabling the server to push updates
+- to the subscription's result
+
+Clients need to communicate with the server
+
+- NOT via the http protocal
+- but WebSocket
+
+WebSockts make it possible to
+
+- open a two-way interactive communication session
+- bweteeen the client and the server
+
+This API enables to
+
+- send messages to a server
+- and receive and event-driven response
+- (so not a periodic polling required)
