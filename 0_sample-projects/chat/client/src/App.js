@@ -1,4 +1,4 @@
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloProvider } from "@apollo/client";
 import React, { Component } from "react";
 import { getLoggedInUser, logout } from "./auth";
 import Chat from "./Chat";
