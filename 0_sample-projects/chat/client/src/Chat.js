@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import { useQuery } from "@apollo/react-hooks";
+import React, { useEffect } from "react";
+import { messagesQuery } from "./graphql/queries";
 import MessageInput from "./MessageInput";
 import MessageList from "./MessageList";
 
 export default function Chat({ user }) {
-  const [messages, setMessages] = useState([]);
+  const { loading, error, data } = useQuery(messagesQuery);
+  const messages = data ? data.messages : [];
 
   async function handleSend(text) {
-    const message = { id: text, from: "you", text };
-    setMessages(messages.concat(message));
+    // TODO
   }
+
+  useEffect(() => {}, []);
+
+  if (loading) return <p>Data is loading... </p>;
+  if (error) return <p>Error!</p>;
 
   return (
     <section className="section">

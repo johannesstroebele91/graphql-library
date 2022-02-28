@@ -19,7 +19,8 @@
 - [8. React component `job-board/client/src/components/JobBoard.js`](#8-react-component-job-boardclientsrccomponentsjobboardjs)
 - [Use React Apollo to make it easier to use Apollo Client with React](#use-react-apollo-to-make-it-easier-to-use-apollo-client-with-react)
 - [Setup Apollo Provider to use React Apollo](#setup-apollo-provider-to-use-react-apollo)
-- [Using React Apollo Hooks](#using-react-apollo-hooks)
+- [Ensure that only it is an functional componnt](#ensure-that-only-it-is-an-functional-componnt)
+- [Use React Apollo hooks to make request](#use-react-apollo-hooks-to-make-request)
 
 # 5. Apollo Client (Cache)
 
@@ -185,7 +186,7 @@ class App extends Component {
 }
 ```
 
-# Using React Apollo Hooks
+# Ensure that only it is an functional componnt
 
 First all class based components
 
@@ -202,6 +203,42 @@ export default function Chat({ user }) {
     const message = { id: text, from: "you", text };
     setMessages(messages.concat(message));
   }
+
+  return (
+    <section className="section">
+      <div className="container">
+        <h1 className="title">Chatting as {user}</h1>
+        <MessageList user={user} messages={messages} />
+        <MessageInput onSend={handleSend} />
+      </div>
+    </section>
+  );
+}
+```
+
+# Use React Apollo hooks to make request
+
+Requests can be made by using
+
+- hooks such as useQuery
+- which receives a GraphQL query, and
+- additional parameters e.g. variables, fetchPolicy, ...s
+
+```javascript
+export default function Chat({ user }) {
+  const { loading, error, data } = useQuery(messagesQuery, {
+    variables: { id: someId },
+    fetchPolicy,
+  });
+  // create messges object if data is defiend or initialize empty
+  const messages = data ? data.messages : [];
+
+  async function handleSend(text) {
+    const message = { id: text, from: "you", text };
+    setMessages(messages.concat(message));
+  }
+
+  useEffect(() => {}, []);
 
   return (
     <section className="section">
