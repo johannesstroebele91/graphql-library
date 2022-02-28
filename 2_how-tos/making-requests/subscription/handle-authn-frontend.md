@@ -16,7 +16,7 @@ The authentication information
 - which can contain any property, such as the accessToken
 - PS will eventualle be send as the payload object
 
-Example: `chat/client/src/graphql/client.js`
+# Example: `chat/client/src/graphql/client.js`
 
 ```javascript
 ...
