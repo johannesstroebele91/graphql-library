@@ -21,7 +21,7 @@ export const addMessageMutation = gql`
   }
 `;
 
-export const messageAddSubscription = gql`
+export const messageAddedSubscription = gql`
   subscription {
     messageAdded {
       id
@@ -45,6 +45,6 @@ export async function addMessage(text) {
 }
 
 export async function onMessageAdded(handleMessage) {
-  const observable = client.subscribe({ query: messageAddSubscription });
+  const observable = client.subscribe({ query: messageAddedSubscription });
   return observable.subscribe(({ data }) => handleMessage(data.messageAdded));
 }
