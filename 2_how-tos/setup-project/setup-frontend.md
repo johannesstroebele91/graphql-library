@@ -20,7 +20,8 @@
 - [Use React Apollo to make it easier to use Apollo Client with React](#use-react-apollo-to-make-it-easier-to-use-apollo-client-with-react)
 - [Setup Apollo Provider to use React Apollo](#setup-apollo-provider-to-use-react-apollo)
 - [Ensure that only it is an functional componnt](#ensure-that-only-it-is-an-functional-componnt)
-- [Use React Apollo hooks to make request](#use-react-apollo-hooks-to-make-request)
+- [Get data from the server](#get-data-from-the-server)
+- [Change data on the serve](#change-data-on-the-serve)
 
 # 5. Apollo Client (Cache)
 
@@ -216,13 +217,16 @@ export default function Chat({ user }) {
 }
 ```
 
-# Use React Apollo hooks to make request
+# Get data from the server
 
-Requests can be made by using
+Requests can be made by
 
-- hooks such as useQuery
+- using the useQuery hook
 - which receives a GraphQL query, and
-- additional parameters e.g. variables, fetchPolicy, ...s
+- additional parameters e.g. variables, fetchPolicy, ...
+- and returns an object
+
+Example: `chat/client/src/Chat.js`
 
 ```javascript
 export default function Chat({ user }) {
@@ -233,12 +237,58 @@ export default function Chat({ user }) {
   // create messges object if data is defiend or initialize empty
   const messages = data ? data.messages : [];
 
-  async function handleSend(text) {
-    const message = { id: text, from: "you", text };
-    setMessages(messages.concat(message));
-  }
+  if (loading) return <p>Data is loading... </p>;
+  if (error) return <p>Error!</p>;
 
-  useEffect(() => {}, []);
+  return (
+    <section className="section">
+      <div className="container">
+        <h1 className="title">Chatting as {user}</h1>
+        <MessageList user={user} messages={messages} />
+      </div>
+    </section>
+  );
+}
+```
+
+# Change data on the serve
+
+Mutations can be made by
+
+- using the useMutation() hook
+- which receives a GraphQL query, and
+- additional parameters e.g. variables, fetchPolicy, ...s
+- and returns
+  1. an `array of objects` with a function that let's you trigger if called
+  2. an result object with properties like loading,
+
+This mutation function
+
+- can then be called, and
+- the necessary data passed
+- via variables object of the parameters
+- It is important that
+  - the function does not need to return anything
+  - but only needs to be called
+  - to change the data
+
+The result object can return `loading`, `error`, `data`, and `called`:
+
+- loading: show sth to the user as long a mutation is processing
+- error: show user an error message if the mutation failed
+- data: data that was mutated, which can be undefined
+- called:
+  - tells if the mutation has been called or not,
+  - which is convenient to trigger like redirecting to another screen
+
+Example: `chat/client/src/Chat.js`
+
+````javascript
+export default function Chat({ user }) {
+  const [addMessage, {loading, error, data, called}] = useMutation(addMessageMutation);
+  async function handleSend(text) {
+    await addMessage({ variables: { input: text } });
+  }
 
   return (
     <section className="section">
@@ -249,5 +299,5 @@ export default function Chat({ user }) {
       </div>
     </section>
   );
-}
-```
+}```
+````
