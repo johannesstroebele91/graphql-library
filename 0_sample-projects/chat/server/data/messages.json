@@ -3,40 +3,5 @@
     "id": "SJKhIAKYB",
     "from": "system",
     "text": "Welcome!"
-  },
-  {
-    "id": "r1-6G1Exq",
-    "from": "alice",
-    "text": "hello :)"
-  },
-  {
-    "id": "By08Ve4gc",
-    "from": "bob",
-    "text": "whats up?"
-  },
-  {
-    "id": "rJbFtlEx9",
-    "from": "bob",
-    "text": "hello"
-  },
-  {
-    "id": "HJd8dqUxc",
-    "from": "bob",
-    "text": "whats aup"
-  },
-  {
-    "id": "Hyxdu5Uxc",
-    "from": "alice",
-    "text": "pretty good"
-  },
-  {
-    "id": "HkKsJrYe9",
-    "from": "bob",
-    "text": "hi there"
-  },
-  {
-    "id": "HyB3yHFxq",
-    "from": "bob",
-    "text": "asd"
   }
 ]

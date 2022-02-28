@@ -18,6 +18,8 @@
 - [7. Request `job-board/client/src/requests.js`](#7-request-job-boardclientsrcrequestsjs)
 - [8. React component `job-board/client/src/components/JobBoard.js`](#8-react-component-job-boardclientsrccomponentsjobboardjs)
 - [Use React Apollo to make it easier to use Apollo Client with React](#use-react-apollo-to-make-it-easier-to-use-apollo-client-with-react)
+- [Setup Apollo Provider to use React Apollo](#setup-apollo-provider-to-use-react-apollo)
+- [Using React Apollo Hooks](#using-react-apollo-hooks)
 
 # 5. Apollo Client (Cache)
 
@@ -136,3 +138,51 @@ The packages are:
   - uses a function graphql() to
   - call the query and
   - pass it into the component
+
+# Setup Apollo Provider to use React Apollo
+
+The Apollo Provider
+
+- needs to be installed via `npm i @apollo/react-hooks`, and
+- setup in the top-level component of the app
+
+It is important that hooks won't work directly
+
+- in the top-level component of the app
+- but ONLY in sub-components!!!
+
+This is done by
+
+- wrapping everyting of the return statement
+- and passing the props `client` to `ApolloProvider`
+- which makes the Apollo Client instance
+- accessible to all underlying React components
+
+It is important to state that
+
+- this implies that no hooks can be used
+- in the Login component
+- because it is outside of ApolloProvider
+- However, this is fine due to login does not make requests
+
+Example `chat/client/src/App.js`:
+
+```javascript
+class App extends Component {
+  ...
+  render() {
+    const { user } = this.state;
+    if (!user) {
+      return <Login onLogin={this.handleLogin.bind(this)} />;
+    }
+    return (
+      <ApolloProvider client={client}>
+        <NavBar onLogout={this.handleLogout.bind(this)} />
+        <Chat user={user} />
+      </ApolloProvider>
+    );
+  }
+}
+```
+
+# Using React Apollo Hooks
