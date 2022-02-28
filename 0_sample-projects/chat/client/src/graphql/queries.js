@@ -1,5 +1,5 @@
-import { gql } from 'apollo-boost';
-import client from './client';
+import { gql } from "apollo-boost";
+import client from "./client";
 
 const messagesQuery = gql`
   query MessagesQuery {
@@ -21,15 +21,30 @@ const addMessageMutation = gql`
   }
 `;
 
+const messageAddSubscription = gql`
+  subscription {
+    messageAdded {
+      id
+      from
+      text
+    }
+  }
+`;
+
+export async function getMessages() {
+  const { data } = await client.query({ query: messagesQuery });
+  return data.messages;
+}
+
 export async function addMessage(text) {
-  const {data} = await client.mutate({
+  const { data } = await client.mutate({
     mutation: addMessageMutation,
-    variables: {input: {text}}
+    variables: { input: { text } },
   });
   return data.message;
 }
 
-export async function getMessages() {
-  const {data} = await client.query({query: messagesQuery});
-  return data.messages;
+export async function onMessageAdded(handleMessage) {
+  const observable = client.subscribe({ query: messageAddSubscription });
+  return observable.subscribe(({ data }) => handleMessage(data.messageAdded));
 }

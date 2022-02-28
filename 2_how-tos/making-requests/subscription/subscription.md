@@ -8,8 +8,12 @@
   - [2.3. Resolvers](#23-resolvers)
   - [2.4. Testing with GraphQL playground](#24-testing-with-graphql-playground)
 - [3. Frontend](#3-frontend)
-  - [3.1. requests.js](#31-requestsjs)
-  - [3.2. React component](#32-react-component)
+  - [3.1. Install necessary packages](#31-install-necessary-packages)
+  - [Enhance Apollo Client to work with WebSockets](#enhance-apollo-client-to-work-with-websockets)
+  - [3.1. Write query for subscription](#31-write-query-for-subscription)
+  - [3.2. Add call of subscription in React component](#32-add-call-of-subscription-in-react-component)
+  - [3.3. Write request that uses query](#33-write-request-that-uses-query)
+  - [3.4. Handle that the subscription is also stopped at some point](#34-handle-that-the-subscription-is-also-stopped-at-some-point)
 
 # 1. Basics
 
@@ -218,21 +222,187 @@ This shows that multiple responses can be send via subscription
 
 # 3. Frontend
 
-## 3.1. requests.js
+## 3.1. Install necessary packages
+
+- `npm install apollo-link-ws`
+- `npm install subscription-transport-ws`
+- `npm i graphql`
+
+## Enhance Apollo Client to work with WebSockets
+
+Add support for web sockets to the client
+
+Example `chat/client/src/graphql/client.js`:
+
+Create a new WebSocketLink
+
+- by define a valid WebSockets uri
+- with not http but ws as the protocol
+- PS lazy: so the subscription is not triggered always when starting the app
+- PS reconnect: reconnects if subscription aborts by accident
 
 ```javascript
-subscription {
-  messageAdded {
-    id
-    from
-    text
-  }
-}
+const httpUrl = "http://localhost:9000/graphql";
+const wsUrl = "ws://localhost:9000/graphql";
 
+const httpLink = ApolloLink.from([
+  new ApolloLink((operation, forward) => {
+    const token = getAccessToken();
+    if (token) {
+      operation.setContext({ headers: { authorization: `Bearer ${token}` } });
+    }
+    return forward(operation);
+  }),
+  new HttpLink({ uri: httpUrl }),
+]);
+
+const wsLink = new WebSocketLink({
+  uri: wsUrl,
+  options: { lazy: true, reconnect: true },
+});
 ```
 
-## 3.2. React component
+The split function enables to
+
+- use a link conditionally
+- leveraging a function `isSubscription`
+
+The function isSubscription return `true`
+
+- which means the wsLink for the subscription is used
+- in case the definiton operation is a subscription
 
 ```javascript
+function isSubscription(operation) {
+  const definition = getMainDefinition(operation.query);
+  return (
+    definition.kind === "OperationDefinition" &&
+    definition.operation === "subscription"
+  );
+}
 
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: split(isSubscription, wsLink, httpLink),
+  defaultOptions: { query: { fetchPolicy: "no-cache" } },
+});
+```
+
+## 3.1. Write query for subscription
+
+Example: `chat/client/src/graphql/queries.js`
+
+```javascript
+const messageAddSubscription = gql`
+  subscription {
+    messageAdded {
+      id
+      from
+      text
+    }
+  }
+`;
+```
+
+## 3.2. Add call of subscription in React component
+
+First think about
+
+- how the subscription should be used
+- in the Rect component
+
+In this case it is
+
+- when the data is gotten from the server
+- for the first time
+- in e.g. useEffect() or componentDidMount() function
+
+Example: `chat/client/src/Chat.js`
+
+```javascript
+class Chat extends Component {
+  state = { messages: [] };
+
+  async componentDidMount() {
+    const messages = await getMessages();
+    this.setState({ messages });
+    onMessageAdded((message) => {
+      this.setState({ messages: this.state.messages.concat(message) });
+    });
+  }
+  ...
+}
+```
+
+## 3.3. Write request that uses query
+
+Based on how the subscription
+
+- is used in the React component
+- the actual request needs to be defined
+
+Start the subscription by
+
+- calling the client.subscribe()
+- which returns an obserable which multiple fields
+  - in this case, only the `data` field of the result is used
+  - the field `messageAdded` has the subfield `messageAdded`
+  - due to the name `messageAdded` of the subscription shown above
+
+The `handleMessage()` callback comes from
+
+- is the passed function parameter
+- of the onMessageAdded call in the React component
+
+-
+
+```javascript
+export async function onMessageAdded(handleMessage) {
+  const observable = client.subscribe({ query: messageAddSubscription });
+  observable.subscribe(({ data }) => handleMessage(data.messageAdded));
+}
+```
+
+## 3.4. Handle that the subscription is also stopped at some point
+
+Frist return the observable instead of just executing it
+
+Example: `chat/client/src/graphql/queries.js`
+
+```javascript
+export async function onMessageAdded(handleMessage) {
+  const observable = client.subscribe({ query: messageAddSubscription });
+  return observable.subscribe(({ data }) => handleMessage(data.messageAdded));
+}
+```
+
+Then handle the cancelation of a unecessary subscription
+
+- so in case the user ends the session via an e.g. log out
+- by creating a reference to the active subscription and
+- canceling it in the `componentWillUnmount()`
+- if the subscription is inactive
+
+Example: `chat/client/src/Chat.js`
+
+```javascript
+class Chat extends Component {
+  state = { messages: [] };
+  subscription = null;
+
+  async componentDidMount() {
+    const messages = await getMessages();
+    this.setState({ messages });
+    this.subscription = onMessageAdded((message) => {
+      this.setState({ messages: this.state.messages.concat(message) });
+    });
+  }
+  // Is executed if a user e.g. logs out
+  componentWillUnmount() {
+    if(this.subscription){
+      this.subscription.unsubscribe();
+    }
+  }
+  ...
+}
 ```
