@@ -17,6 +17,7 @@
 - [5. Apollo Client (Cache)](#5-apollo-client-cache)
 - [7. Request `job-board/client/src/requests.js`](#7-request-job-boardclientsrcrequestsjs)
 - [8. React component `job-board/client/src/components/JobBoard.js`](#8-react-component-job-boardclientsrccomponentsjobboardjs)
+- [Use React Apollo to make it easier to use Apollo Client with React](#use-react-apollo-to-make-it-easier-to-use-apollo-client-with-react)
 
 # 5. Apollo Client (Cache)
 
@@ -107,3 +108,31 @@ export function JobBoard() {
   );
 }
 ```
+
+# Use React Apollo to make it easier to use Apollo Client with React
+
+_Ref: https://www.apollographql.com/docs/react/#community-integrations_
+
+Instead of React Apollo,
+
+- the other solution made it possible
+- to use Apollo Client with any JS application
+
+React Apollo consists not of one, but three different packages
+
+- because the approach changed dramatically
+- since it was first introducted with higher-order-components
+
+The packages are:
+
+- react hooks (newest version):
+  - just a function call (e.g. useQuery, useMutation, useSubscription)
+  - variables `loading, error, and data` can be destructured directly
+- react components (medium-old version):
+  - provides a GraphQL component called "Query"
+  - that is used in the jsx code
+  - and provide parameters `loading, error, and data`
+- reaxt hoc (higher-order-components) (oldest version):
+  - uses a function graphql() to
+  - call the query and
+  - pass it into the component
