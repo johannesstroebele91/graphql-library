@@ -5,19 +5,7 @@
 
 # Basics
 
-Unless all of the data
-
-- you are loading is completely public,
-- your app has some sort of
-- users, accounts and permissions systems
-
-If different users
-
-- have different permissions in the app,
-- then you need a way to tell the server
-- which user is associated with each request
-
-Further, it is important to
+it is important to
 
 - hide the GraphQL API from the outside
 - to probibit unautorized users

@@ -2,6 +2,8 @@
 
 ## 1.1. Schema `job-board/server/schema.graphql`
 
+Defines how endpoint for query will look like
+
 ```graphql
 type Query {
   jobs: [Job]
@@ -17,7 +19,20 @@ type Job {
 
 ## 1.2. Resolvers `job-board/server/resolvers.js`
 
-List jobs using JSON db
+The query object
+
+- includes the handler
+- for all possible queries
+
+It handels
+
+- how the data is processed (e.g. from the MongoDB)
+- as specified in the schema
+
+Missing nested objects
+
+- can be populated
+- via resolver objects (e.g. Job)
 
 ```javascript
 const db = require("./db");
