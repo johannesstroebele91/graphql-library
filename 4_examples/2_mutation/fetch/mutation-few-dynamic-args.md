@@ -28,7 +28,25 @@ const Mutation = {
 
 # 2. Frontend
 
-## 2.1. requests.js `job-board/client/src/requests.js`
+## 2.1. Write query `job-board/client/src/requests.js`
+
+```javascript
+export const MUTATION_CREATE_JOB = `mutation CreateJob(
+  $companyId: ID
+  $title: String
+  $description: String
+  ){
+    job: createJob(
+      companyId: $companyId
+      title: $title
+      description: $description
+    ) {
+     title
+  }
+}`;
+```
+
+## 2.2. Write request using query `job-board/client/src/requests.js`
 
 ```javascript
 async function graphqlRequest(query, variables = {}) {
@@ -43,27 +61,13 @@ async function graphqlRequest(query, variables = {}) {
   return response.json().data;
 }
 
-export const MUTATION_CREATE_JOB = `mutation CreateJob(
-  $companyId: ID
-  $title: String
-  $description: String
-  ){
-    job: createJob(
-      companyId: $companyId
-      title: $title
-      description: $description
-    ) {
-     title
-  }
-}`;
-
 export async function createJob(input) {
   const { job } = await graphqlRequest(MUTATION_CREATE_JOB, { input });
   return job;
 }
 ```
 
-## 2.2. React component `job-board/client/src/components/JobForm.js`
+## 2.3. Use request in React component `job-board/client/src/components/JobForm.js`
 
 ```javascript
 export const JobForm = () => {

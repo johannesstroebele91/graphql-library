@@ -1,4 +1,52 @@
-# Basics
+# 1. Backend
+
+## 1.1. Schema `job-board/server/schema.graphql`:
+
+```graphql
+type Mutation {
+  createJob(companyId: ID, title: String, description: String): Job
+}
+
+type Job {
+  id: ID!
+  title: String
+  company: Company
+  description: String
+}
+```
+
+## 1.2. Resolver
+
+```javascript
+const Mutation = {
+  createJob: (root, { companyId, title, description }) => {
+    const id = db.jobs.create({ companyId, title, description });
+    return db.jobs.get(id);
+  },
+};
+```
+
+# 2. Frontend
+
+## 2.1. Write mutation `job-board/client/src/requests.js`
+
+```javascript
+export const MUTATION_CREATE_JOB = `mutation CreateJob(
+  $companyId: ID
+  $title: String
+  $description: String
+  ){
+    job: createJob(
+      companyId: $companyId
+      title: $title
+      description: $description
+    ) {
+     title
+  }
+}`;
+```
+
+## 2.3. Write request in React component using mutation `job-board/client/src/components/JobForm.js`
 
 Mutations can be made by
 
