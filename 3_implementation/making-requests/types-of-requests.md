@@ -37,3 +37,5 @@ Types:
    1. For a few arguments (output type) `mutation-few-dynamic-args.md`
    2. For many arguments (input type) `mutation-many-dynamic-args.md`
 2. Mutating with static arguments (e.g. `mutation { job: createJob( companyId: "SJVO-wdOM" title: "Test" description: "Test" ) { title } }`)
+
+# Subscriptions
