@@ -5,15 +5,13 @@ It is important to handle errors
 - because by default the default messages
 - are not helpful
 
-# HowTo
-
-This can be done
-
-- by throwing an error in the graphQLRequest function
-- using the `responseBody.errors` property in files e.g. `requests.js`
-- as shown in the requests.js file
-
 # Example with Apollo Hooks `chat/client/src/Chat.js`
+
+The results from the Apollo operation
+
+- can be destructured
+- for the error property
+- and its value handled accordingly
 
 ```javascript
 export default function Chat({ user }) {
@@ -34,6 +32,12 @@ export default function Chat({ user }) {
 ```
 
 # Example without Apollo Hooks `job-board/client/src/requests.js`
+
+This can be done
+
+- by throwing an error in the graphQLRequest function
+- using the `responseBody.errors` property in files e.g. `requests.js`
+- as shown in the requests.js file
 
 ```javascript
 async function graphqlRequest(query, variables = {}) {
