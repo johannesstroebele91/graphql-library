@@ -13,7 +13,27 @@ This can be done
 - using the `responseBody.errors` property in files e.g. `requests.js`
 - as shown in the requests.js file
 
-# Example Requests `job-board/client/src/requests.js`
+# Example with Apollo Hooks `chat/client/src/Chat.js`
+
+```javascript
+export default function Chat({ user }) {
+  const { data, error } = useQuery(messagesQuery);
+  ...
+  if (error) return <p>Error!</p>;
+
+  return (
+    <section className="section">
+      <div className="container">
+        <h1 className="title">Chatting as {user}</h1>
+        <MessageList user={user} messages={messages} />
+        <MessageInput onSend={handleSend} />
+      </div>
+    </section>
+  );
+}
+```
+
+# Example without Apollo Hooks `job-board/client/src/requests.js`
 
 ```javascript
 async function graphqlRequest(query, variables = {}) {
