@@ -1,10 +1,3 @@
-# 1. Basics
-
-Enable to modify server-side data
-
-- and by default return nothing if not specified
-- however it is recommended to return the created data
-
 # 2. Backend
 
 ## 2.1. Schema `job-board/server/schema.graphql`:

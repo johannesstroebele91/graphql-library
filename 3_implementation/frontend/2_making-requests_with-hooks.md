@@ -62,20 +62,17 @@ It is important to state that
 Example `chat/client/src/App.js`:
 
 ```javascript
-class App extends Component {
+const App = () => {
   ...
-  render() {
-    const { user } = this.state;
-    if (!user) {
-      return <Login onLogin={this.handleLogin.bind(this)} />;
-    }
-    return (
-      <ApolloProvider client={client}>
-        <NavBar onLogout={this.handleLogout.bind(this)} />
-        <Chat user={user} />
-      </ApolloProvider>
-    );
+  if (!user) {
+    return <Login onLogin={handleLogin} />;
   }
+  return (
+    <ApolloProvider client={client}>
+      <NavBar onLogout={handleLogout} />
+      <Chat user={user} />
+    </ApolloProvider>
+  );
 }
 ```
 

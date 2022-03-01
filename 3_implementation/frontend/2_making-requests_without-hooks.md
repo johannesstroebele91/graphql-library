@@ -1,26 +1,12 @@
-TODO rein:
+# 1. Write the query
 
-1. Requests e.g. `job-board/client/src/requests.js`
-   - specify which data is requested by the frontend
-   - endpointURL, method, headers, body (query, _variables_), return data
-2. Queries or mutations e.g. `job-board/client/src/queries.js`
-   - are created like specified in `make queries` and `make mutations`
-   - should be outsource if there are too many queries (e.g. `movies-management-system/client/src/queries/queries.js`)
-3. React component:
-   - a request is triggerd using a load function
-     - which triggers the functions specified in the requests.js
-     - e.g. `job-board/client/src/components/JobBoard.js`
-
-# 1. Write Requests using fetch()
-
-`job-board/client/src/requests.js`
-
-More information is provided in `making-requests/basics.md`
-
+Queries can be stated using
 "gql" enables to convert the query string
 
 - into a structured object (into query document)
-- that can be understoof by Apollo Client `job-board/client/src/queries.js`
+- that can be understood by Apollo Client
+
+Example: `job-board/client/src/queries.js`
 
 ```javascript
 export const QUERY_JOBS = gql`
@@ -37,7 +23,18 @@ export const QUERY_JOBS = gql`
     }
   }
 `;
+```
 
+# 2. Write requests using fetch()
+
+Requests need to specified using
+
+- how data should be get or changed via
+- `client.query` (see below)
+- or `fetch()` e.g. `job-board/client/src/auth.js`
+  - endpointURL, method, headers, body (query, _variables_), return data
+
+```javascript
 const endpointURL = "http://localhost:9000/graphql";
 
 export async function loadJobs() {
@@ -49,6 +46,11 @@ export async function loadJobs() {
 ```
 
 # 2. Call the requests from the React components
+
+React component:
+
+- a request is triggerd using a load function
+- which triggers the functions specified in the requests.js
 
 Example: `job-board/client/src/components/JobBoard.js`
 

@@ -1,7 +1,5 @@
 # Basics
 
-Change data on the serve
-
 Mutations can be made by
 
 - using the useMutation() hook
