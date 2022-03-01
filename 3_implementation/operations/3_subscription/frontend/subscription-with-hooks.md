@@ -1,13 +1,26 @@
-- [Basics](#basics)
-- [Multiple ways](#multiple-ways)
-  - [1. For simply displaying the lastest data](#1-for-simply-displaying-the-lastest-data)
-  - [2. For working with all data](#2-for-working-with-all-data)
-    - [2.1. Local state management](#21-local-state-management)
-    - [2.2. onCompleted paramter](#22-oncompleted-paramter)
+- [1. Write subscription](#1-write-subscription)
+- [2. Simply displaying lastest data via useSubscription hook](#2-simply-displaying-lastest-data-via-usesubscription-hook)
+- [2. Working with previous and latest data](#2-working-with-previous-and-latest-data)
+  - [2.1. Local state management](#21-local-state-management)
+  - [2.2. onCompleted paramter](#22-oncompleted-paramter)
 
-# Basics
+# 1. Write subscription
 
-Get array of data from the server based on events
+Example: `chat-app/client/src/graphql/queries.js`
+
+```javascript
+export const messageAddedSubscription = gql`
+  subscription {
+    messageAdded {
+      id
+      from
+      text
+    }
+  }
+`;
+```
+
+# 2. Simply displaying lastest data via useSubscription hook
 
 Subscriptions can be made by
 
@@ -15,17 +28,7 @@ Subscriptions can be made by
 - which receives a GraphQL query, AND
 - additional parameters e.g. onSubscriptionData, variables, fetchPolicy,
 
-Important, the useSubscription() hook
-
-- needs to be placed AFTER the useQuery() hook
-- because you only want to subscribe to messages
-- that were added after the ones that were gotten from the query
-
-# Multiple ways
-
-The returned data of the subscription can be handled in multiple ways like with mutations:
-
-## 1. For simply displaying the lastest data
+For simply displaying the lastest data
 
 - the result object can be used like with useQuery()
 - so by destructuring the `loading`, `error`, `data` property
@@ -34,16 +37,47 @@ The returned data of the subscription can be handled in multiple ways like with 
   - received from the subscription
   - e.g. `const messages = data ? [data.messageAdded] . [];`
 
-## 2. For working with all data
+Important, the useSubscription() hook
+
+- needs to be placed AFTER the useQuery() hook
+- because you only want to subscribe to messages
+- that were added after the ones that were gotten from the query
+
+Example: `chat-app/client/src/Chat.js`
+
+```javascript
+export default function Chat({ user }) {
+  const { data } = useQuery(messagesQuery);
+  const {loading, error, data} = useSubscription(messageAddedSubscription);
+  const messages = data ? [data.messageAdded] . [];
+
+
+
+  async function handleSend(text) {
+    await addMessage(text);
+  }
+
+  return (
+    <section className="section">
+      <div className="container">
+        <h1 className="title">Chatting as {user}</h1>
+        <MessageList user={user} messages={messages} />
+        <MessageInput onSend={handleSend} />
+      </div>
+    </section>
+  );
+}
+```
+
+# 2. Working with previous and latest data
 
 The onSubscriptionData parameter can be used
 
 - to append the new created value
 - to the existing array of messages
-- and can use again two different methods
-- to make it work:
+- and can use via **two different methods**:
 
-### 2.1. Local state management
+## 2.1. Local state management
 
 Apollo client makes it easier
 
@@ -113,7 +147,7 @@ export default function Chat({ user }) {
 }
 ```
 
-### 2.2. onCompleted paramter
+## 2.2. onCompleted paramter
 
 Another way is to use
 
@@ -146,4 +180,8 @@ export default function Chat({ user }) {
     </section>
   );
 }
+```
+
+```
+
 ```
