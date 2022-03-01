@@ -12,11 +12,34 @@ The API can be hidden
 - by checking in the query or mutation
 - if it was made by an autorized user
 
-# HowTo
+# Setup Apollo Server
 
-This can be done by using the context parameter which
+First, the authentication
 
-- can provide application-specific data (e.g. user)
+- needs to be setup
+- using jwt
+
+```javascript
+const jwtSecret = Buffer.from("Zn8Q5tyZ/G1MHltc4F/gTkVJMlrbKiZt", "base64");
+
+const app = express();
+
+app.use(
+  cors(),
+  bodyParser.json(),
+  expressJwt({
+    secret: jwtSecret,
+    credentialsRequired: false,
+  })
+);
+```
+
+# Use context paramter to get user data
+
+Then the context parameter is used
+
+- to get the authn data
+- because it provides application-specific data (e.g. user)
 - not GraphQL data
 - to GraphQL resolvers
 
@@ -26,7 +49,7 @@ To make this possible,
 - to the apolloServer instance
 - as shown in `job-board/server/server.js`
 
-```javascript
+```
 const context = ({ req }) => ({ user: req.user });
 
 const apolloServer = new ApolloServer({
@@ -53,6 +76,8 @@ const Mutation = {
   },
 };
 ```
+
+# Result
 
 Now the mutation is protected,
 

@@ -1,22 +1,19 @@
 - [Basics](#basics)
-- [Login](#login)
-- [Example using Apollo Client](#example-using-apollo-client)
-- [Example without Apollo Client (fetch() function)](#example-without-apollo-client-fetch-function)
+- [Background](#background)
+- [Two approaches to authn (fetch vs useMutation)](#two-approaches-to-authn-fetch-vs-usemutation)
+  - [1) Approach: fetch()](#1-approach-fetch)
+    - [Setting up Apollo Client](#setting-up-apollo-client)
+    - [Using `request.headers` of fetch()](#using-requestheaders-of-fetch)
+  - [2) Approach: useMutation()](#2-approach-usemutation)
 
 # Basics
 
-it is important to
+Mutations should only be callable
 
-- hide the GraphQL API from the outside
-- to probibit unautorized users
-- from adding jobs without login
+- when the respective user
+- is authorized
 
-Apollo Client uses
-
-- Apollo Link for that includes
-- several options for authentication.
-
-# Login
+# Background
 
 Users are autorized
 
@@ -45,7 +42,13 @@ The decoded JWT payload is
 - so it can be checked on the user property of the request (req.user)
 - if the user is authenticated
 
-# Example using Apollo Client
+# Two approaches to authn (fetch vs useMutation)
+
+Both methods need jwt setup correctly in the backend!!!
+
+## 1) Approach: fetch()
+
+### Setting up Apollo Client
 
 Authentication for a mutation can be added
 
@@ -58,6 +61,8 @@ The parameters important to the apollo client are:
 
 - "link": to connect to the server entpoint
 - "cache": to use in memory cache
+
+Example: `job-board/client/src/requests.js`
 
 ```javascript
 const authLink = new ApolloLink((operation, forward) => {
@@ -75,10 +80,11 @@ const client = new ApolloClient({
 });
 ```
 
-# Example without Apollo Client (fetch() function)
+### Using `request.headers` of fetch()
 
-The request.headers need to be
+In the fetch() function
 
+- the request.headers need to be
 - conditionally changed
 - if the user is logged in
 - as shown in `job-board/client/src/requests.js`
@@ -99,4 +105,29 @@ async function graphqlRequest(query, variables = {}) {
   }
   // ...
 }
+```
+
+## 2) Approach: useMutation()
+
+_Ref: https://www.apollographql.com/docs/tutorial/mutations/_
+
+The client should
+
+- provide the user's token
+- with each GraphQL operation
+- it sends to our server
+
+Only the apollo client instance
+
+- needs to be setup correctly
+- to define a default set of headers
+
+```javascript
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  cache,
+  uri: "http://localhost:4000/graphql",
+  headers: {
+    authorization: localStorage.getItem("token") || "",
+  },
+});
 ```
